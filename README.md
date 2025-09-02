@@ -7,7 +7,7 @@
 - O cadastro deverá possuir os campos (Marca, Modelo, Ano, Placa, Km, Cor, Preço, lista de opcionais para atribuir ao veículo ex.: (Ar Condicionado, Alarme, Airbag, Freio ABS)).
 - Deverá ser possível incluir até 15 fotos para o veículo.
 - Apenas a km, opcionais e fotos não devem ser obrigatórios.
-- O layout codificado deverá ser exatamente o mesmo do arquivo disponível (adset-layout.ai).
+- <b>O LAYOUT</b> codificado deverá ser <b>EXATAMENTE IGUAL</b> do arquivo disponível (adset-layout.ai).
 - Nos filtros de dropdown deverão ter as seguintes opções por cada drop (<b>Ano Min</b> = 2000, 2001, 2002.. até 2024 | <b>Ano Max</b> = 2000, 2001, 2002.. até 2024 | <b>Preço</b> = 10mil a 50mil, 50mil a 90mil, +90mil | <b>Fotos</b> = Com Fotos, Sem Fotos | <b>Cor</b> = Listar as cores com os valores em distinct dos veículos inseridos).
 
 Após terminar seu teste submeta um pull request e aguarde seu feedback.
