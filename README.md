@@ -10,7 +10,7 @@
 - (5) <b>O LAYOUT</b> codificado deverá ser <b>EXATAMENTE IGUAL</b> do arquivo disponível (adset-layout.ai).
 - (6) Nos filtros de dropdown deverão ter as seguintes opções por cada drop (<b>Ano Min</b> = 2000, 2001, 2002.. até 2024 | <b>Ano Max</b> = 2000, 2001, 2002.. até 2024 | <b>Preço</b> = 10mil a 50mil, 50mil a 90mil, +90mil | <b>Fotos</b> = Com Fotos, Sem Fotos | <b>Cor</b> = Listar as cores com os valores em distinct dos veículos inseridos).
 
-TODOS os requisitos são obrigatórios a implementação.
+TODOS os requisitos são obrigatórios a implementação.<br />
 Após terminar seu teste submeta um pull request e aguarde seu feedback.
 
 ## Instruções:
