@@ -24,7 +24,7 @@ Após terminar seu teste submeta um pull request e aguarde seu feedback.
 - Angular Material (https://material.angular.io/)
 
 ### IDE:
- - Back-end Microsoft Visual Studio 2013+ Community (https://visualstudio.microsoft.com/pt-br/vs/community/)
+ - Back-end Microsoft Visual Studio 2022+ Community (https://visualstudio.microsoft.com/pt-br/vs/community/)
  - Front-end Microsoft Visual Studio Code (https://code.visualstudio.com/download)
  
 ### Servidor de Banco:
