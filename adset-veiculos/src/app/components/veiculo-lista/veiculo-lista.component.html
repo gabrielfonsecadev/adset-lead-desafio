@@ -1,0 +1,223 @@
+<div class="background-container">
+  <div class="lista">
+    <!-- Abas dos portais no topo direito -->
+    <div class="container-topo">
+      <div class="ordenacao-linha">
+        <div class="ordenacao-item">
+          <div class="ordenacao-setas">
+            <span class="seta-up">▲</span>
+            <span class="seta-down">▼</span>
+          </div>
+
+          <button class="clear-btn" (click)="limparOrdenacao()">
+            <span class="material-icons clear-icon">clear</span>
+          </button>
+
+          <div class="ordenacao-ponta"></div>
+        </div>
+
+        <button class="ordenacao-btn" [class.ativo]="ordenacaoAtiva === 'marca'" (click)="ordenarPor('marca')">
+          <span>Marca / Modelo</span>
+          <div class="ordenacao-setas">
+            <span class="seta-up" [class.ativa]="ordenacaoAtiva === 'marca' && direcaoOrdenacao === 'asc'">▲</span>
+            <span class="seta-down" [class.ativa]="ordenacaoAtiva === 'marca' && direcaoOrdenacao === 'desc'">▼</span>
+          </div>
+        </button>
+
+        <button class="ordenacao-btn" [class.ativo]="ordenacaoAtiva === 'ano'" (click)="ordenarPor('ano')">
+          <span>Ano</span>
+          <div class="ordenacao-setas">
+            <span class="seta-up" [class.ativa]="ordenacaoAtiva === 'ano' && direcaoOrdenacao === 'desc'">▲</span>
+            <span class="seta-down" [class.ativa]="ordenacaoAtiva === 'ano' && direcaoOrdenacao === 'asc'">▼</span>
+          </div>
+        </button>
+
+        <button class="ordenacao-btn" [class.ativo]="ordenacaoAtiva === 'preco'" (click)="ordenarPor('preco')">
+          <span>Preço</span>
+          <div class="ordenacao-setas">
+            <span class="seta-up" [class.ativa]="ordenacaoAtiva === 'preco' && direcaoOrdenacao === 'asc'">▲</span>
+            <span class="seta-down" [class.ativa]="ordenacaoAtiva === 'preco' && direcaoOrdenacao === 'desc'">▼</span>
+          </div>
+        </button>
+
+        <button class="ordenacao-btn" [class.ativo]="ordenacaoAtiva === 'fotos'" (click)="ordenarPor('fotos')">
+          <span>Fotos</span>
+          <div class="ordenacao-setas">
+            <span class="seta-up" [class.ativa]="ordenacaoAtiva === 'fotos' && direcaoOrdenacao === 'asc'">▲</span>
+            <span class="seta-down" [class.ativa]="ordenacaoAtiva === 'fotos' && direcaoOrdenacao === 'desc'">▼</span>
+          </div>
+        </button>
+      </div>
+
+      <div class="exibir-container">
+        <span class="exibir-label">Exibir</span>
+        <select class="exibir-select" [(ngModel)]="pageSize" (change)="atualizarPaginacao()">
+          <option value="1">1</option>
+          <option value="10">10</option>
+          <option value="25">25</option>
+          <option value="50">50</option>
+          <option value="100">100</option>
+        </select>
+        <span class="exibir-seta">▼</span>
+      </div>
+
+      <div class="portais-tabs-topo">
+        <div class="tab company-tab">
+          <div class="portal-tooltip">iCarros</div>
+          <img src="/assets/iCarros.svg" alt="iCarros" class="icarros-img">
+        </div>
+
+        <div class="tab company-tab">
+          <div class="portal-tooltip">WebMotors</div>
+          <img src="/assets/WebMotors.svg" alt="WebMotors" class="webmotors-img">
+        </div>
+      </div>
+
+    </div>
+
+    <div class="content-container">
+      <div class="veiculo-card" *ngFor="let v of filtrados | slice: ((page - 1) * pageSize) : (page * pageSize)">
+        <!-- Container principal do veículo -->
+        <div class="veiculo-container">
+          <div class="image-container">
+            <div class="delete-btn" (click)="excluirVeiculo(v.id)">
+              <mat-icon>delete</mat-icon>
+            </div>
+            <!-- Imagem do veículo -->
+            <div class="veiculo-imagem">
+              <img [src]="v.fotos && v.fotos.length > 0 ? v.fotos[0].imagemBase64 : 'assets/no-image.png'"
+                [alt]="v.marca + ' ' + v.modelo">
+            </div>
+          </div>
+
+
+          <!-- Informações principais do veículo -->
+          <div class="veiculo-info-principal">
+            <div class="veiculo-titulo">
+              <span class="marca-modelo">{{ v.marca.toUpperCase() }} {{ v.modelo.toUpperCase() }} | {{ v.ano }}</span>
+            </div>
+
+            <div class="veiculo-detalhes">
+              <div class="detalhe-item">
+                <span class="label">Placa -</span>
+                <span class="valor">{{ v.placa }}</span>
+              </div>
+              <div class="detalhe-item">
+                <span class="label">Km -</span>
+                <span class="valor">{{ v.km | number }}</span>
+              </div>
+              <div class="detalhe-item">
+                <span class="label">Cor -</span>
+                <span class="valor">{{ v.cor }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Seção de ações no centro -->
+          <div class="veiculo-acoes-centro">
+            <!-- Tooltip dinâmica ancorada ao botão Editar -->
+            <div class="opcoes-icons">
+              <div class="editar-container">
+                <div class="editar-tooltip">Editar Veículo</div>
+                <button class="editar-btn" (click)="editarVeiculo(v.id)">
+                  <mat-icon>edit</mat-icon>
+                </button>
+              </div>
+
+              <div class="container-opcao">
+                <mat-icon class="opcao-icon">photo_camera</mat-icon>
+                <span class="opcoes-count" [ngClass]="{'text-red-600': v.fotos?.length === 0}">
+                  {{ v.fotos?.length || 0}}
+                </span>
+              </div>
+
+              <div class="container-opcao">
+                <mat-icon class="opcao-icon">settings</mat-icon>
+                <span class="opcoes-text" [ngClass]="{'text-red-600': v.opcionais?.length === 0}">Opcionais</span>
+              </div>
+            </div>
+
+            <div class="veiculo-preco">
+              R$ {{ v.preco | number:'1.2-2' }}
+            </div>
+          </div>
+
+          <!-- Seção dos portais à direita -->
+          <div class="portais-section-direita">
+            <div class="pacotes-lista-dupla">
+              <!-- Coluna iCarros -->
+              <div class="pacotes-lista-vertical">
+                <div class="pacote-item">
+                  <span class="pacote-label">Diamante Feirão</span>
+                  <div class="pacote-checkbox">
+                    <input type="checkbox" [checked]="v.icarros?.diamanteFeirado"
+                      (change)="alterarPacote(v, 'icarros', 'diamanteFeirado', $event)">
+                    <span class="valor-range">010 - 008</span>
+                  </div>
+                </div>
+
+                <div class="pacote-item">
+                  <span class="pacote-label">Diamante</span>
+                  <div class="pacote-checkbox">
+                    <input type="checkbox" [checked]="v.icarros?.diamante"
+                      (change)="alterarPacote(v, 'icarros', 'diamante', $event)">
+                    <span class="valor-range">030 - 025</span>
+                  </div>
+                </div>
+
+                <div class="pacote-item">
+                  <span class="pacote-label">Platinum</span>
+                  <div class="pacote-checkbox">
+                    <input type="checkbox" [checked]="v.icarros?.platinum"
+                      (change)="alterarPacote(v, 'icarros', 'platinum', $event)">
+                    <span class="valor-range">040 - 010</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Coluna WebMotors -->
+              <div class="pacotes-lista-vertical" style="justify-content: center;">
+                <div class="pacote-item">
+                  <span class="pacote-label">Básico</span>
+                  <div class="pacote-checkbox">
+                    <input type="checkbox" [checked]="v.webmotors?.basico"
+                      (change)="alterarPacote(v, 'webmotors', 'basico', $event)">
+                    <span class="valor-range">030 - 025</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="paginacao-rodape">
+    <button class="pag-btn" [disabled]="paginaAtual === 1" (click)="irParaPrimeiraPagina()">
+      <mat-icon>first_page</mat-icon>
+    </button>
+
+    <button class="pag-btn" [disabled]="paginaAtual === 1" (click)="paginaAnterior()">
+      <mat-icon>chevron_left</mat-icon>
+    </button>
+
+    <div class="numeros-pagina">
+      <ng-container *ngFor="let pagina of getPaginasVisiveis()">
+        <div class="pag-numero" [class.active]="pagina === paginaAtual" [class.disabled]="pagina === '...'"
+          (click)="pagina !== '...' && irParaPagina(+pagina)">
+          {{ pagina }}
+        </div>
+      </ng-container>
+    </div>
+
+    <button class="pag-btn" [disabled]="paginaAtual === totalPaginas" (click)="proximaPagina()">
+      <mat-icon>chevron_right</mat-icon>
+    </button>
+
+    <button class="pag-btn" [disabled]="paginaAtual === totalPaginas" (click)="irParaUltimaPagina()">
+      <mat-icon>last_page</mat-icon>
+    </button>
+  </div>
+</div>

@@ -1,0 +1,6 @@
+@adset_veiculos_API_HostAddress = http://localhost:5029
+
+GET {{adset_veiculos_API_HostAddress}}/
+Accept: application/json
+
+###

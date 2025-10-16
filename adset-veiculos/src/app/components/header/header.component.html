@@ -1,0 +1,159 @@
+<div class="bg-[#e7e7e7]">
+  <mat-toolbar color="primary" class="toolbar">
+    <div class="logo-container">
+      <img src="assets/adset-lead-logo.svg" alt="logo" class="logo">
+    </div>
+
+    <!-- Primeira linha - Estatísticas e Ações -->
+    <div class="top-bar">
+      <div class="stats-section">
+        <div class="stat-item">
+          <span class="stat-label">{{ total.toString().padStart(3,'0') }} veículos</span>
+          <span class="stat-total">Total</span>
+        </div>
+
+        <!-- Linha diagonal separadora -->
+        <div class="diagonal-separator"></div>
+
+        <div class="stat-item">
+          <span class="stat-label">{{ comFotos.toString().padStart(3,'0') }} veículos</span>
+          <span class="stat-com-fotos">com fotos</span>
+        </div>
+
+        <!-- Linha diagonal separadora -->
+        <div class="diagonal-separator"></div>
+
+        <div class="stat-item">
+          <span class="stat-label">{{ semFotos.toString().padStart(3,'0') }} veículos</span>
+          <span class="stat-sem-fotos">sem fotos</span>
+        </div>
+      </div>
+
+      <div class="actions-section">
+        <div class="line-separator"></div>
+
+        <div class="export-btn">
+          <span class="stat-label">Exportar Estoque</span>
+          <img src="assets/excel.svg" alt="">
+        </div>
+
+        <div class="line-separator"></div>
+
+        <button class="car-btn" (click)="cadastrar()">
+          <div class="car-tooltip">Cadastrar Veículo</div>
+          <img src="/assets/cadastrar-veiculo.svg" alt="Cadastrar Veículo">
+        </button>
+
+        <div class="save-container" (click)="salvar()">
+          <div class="save-icon-circle">
+            <img src="/assets/salvar.svg" alt="Salvar" class="save-icon">
+          </div>
+          <span class="save-text">Salvar</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Segunda linha - Filtros -->
+    <div class="bottom-bar">
+      <!-- Área de filtros expandida -->
+      <div class="filtros-container" *ngIf="showFiltros" [@dropdownAnim]>
+        <div class="filtros-row">
+          <div class="input-group">
+            <label style="text-align: start;">Placa</label>
+            <input class="w-[120px]" [(ngModel)]="filtro.placa">
+          </div>
+
+          <div class="input-group">
+            <label>Marca</label>
+            <input class="w-[120px]" [(ngModel)]="filtro.marca">
+          </div>
+
+          <div class="input-group">
+            <label>Modelo</label>
+            <input class="w-[140px]" [(ngModel)]="filtro.modelo">
+          </div>
+
+          <div class="input-group w-[90px]">
+            <label>Ano Min</label>
+            <div class="select-container">
+              <select class="custom-select" [(ngModel)]="filtro.anoMin">
+                <option [value]="undefined">Todos</option>
+                <option *ngFor="let a of anos" [value]="a">{{ a }}</option>
+              </select>
+              <span class="select-arrow">▼</span>
+            </div>
+          </div>
+
+          <div class="input-group w-[90px]">
+            <label>Ano Max</label>
+            <div class="select-container">
+              <select class="custom-select" [(ngModel)]="filtro.anoMax">
+                <option [value]="undefined">Todos</option>
+                <option *ngFor="let a of anos" [value]="a">{{ a }}</option>
+              </select>
+              <span class="select-arrow">▼</span>
+            </div>
+          </div>
+
+          <div class="input-group px-[8px] w-[120px]">
+            <label>Preço</label>
+            <div class="select-container">
+              <select class="custom-select" [(ngModel)]="filtro.precoFaixa">
+                <option value="">Todos</option>
+                <option value="10-50">10mil a 50mil</option>
+                <option value="50-90">50mil a 90mil</option>
+                <option value="90+">+90mil</option>
+              </select>
+              <span class="select-arrow">▼</span>
+            </div>
+          </div>
+
+          <div class="input-group w-[90px]">
+            <label>Fotos</label>
+            <div class="select-container">
+              <select class="custom-select" [(ngModel)]="filtro.fotos">
+                <option value="">Todos</option>
+                <option value="com">Com Fotos</option>
+                <option value="sem">Sem Fotos</option>
+              </select>
+              <span class="select-arrow">▼</span>
+            </div>
+          </div>
+
+          <div class="input-group px-[8px]">
+            <label>Opcionais</label>
+            <input class="w-[140px]" [(ngModel)]="filtro.opcionaisTexto">
+          </div>
+
+          <div class="input-group w-[90px]">
+            <label>Cor</label>
+            <div class="select-container">
+              <select class="custom-select" [(ngModel)]="filtro.cor">
+                <option value="">Todos</option>
+                <option *ngFor="let c of cores" [value]="c">{{ c }}</option>
+              </select>
+              <span class="select-arrow">▼</span>
+            </div>
+          </div>
+
+          <button class="clear-btn">
+            <span class="material-icons">clear</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Barra de controles sempre visível -->
+      <div class="bottom-controls">
+        <button mat-raised-button class="search-btn" (click)="buscar()">
+          <span class="material-icons">search</span>
+          Buscar
+        </button>
+
+        <button class="toggle-btn" (click)="toggleFiltros()" aria-label="Alternar filtros">
+          <span class="material-icons">{{ showFiltros ? 'expand_less' : 'expand_more' }}</span>
+        </button>
+      </div>
+    </div>
+  </mat-toolbar>
+
+</div>

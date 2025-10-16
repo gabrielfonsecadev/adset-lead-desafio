@@ -1,0 +1,678 @@
+.background-container {
+  background-color: #f6f6f6;
+}
+
+.lista {
+  padding: 20px 0;
+  padding-bottom: 0;
+  // min-height: calc(100vh - 200px);
+  background-color: #e7e7e7;
+  padding-top: 250px;
+  margin-left: 85px;
+}
+
+// Seção de ordenação
+.ordenacao-container {
+  width: 1000px;
+  margin-bottom: 10px;
+}
+
+.veiculo-card {
+  position: relative;
+  background: white;
+  margin-bottom: 20px;
+  overflow: hidden;
+  height: 180px;
+  width: 1000px;
+}
+
+.veiculo-card:last-child {
+  margin-bottom: 0px;
+}
+
+.content-container {
+  background: white;
+}
+
+// Abas dos portais no topo direito
+.portais-tabs-topo {
+  display: flex;
+  z-index: 10;
+  justify-content: flex-end;
+  gap: 20px;
+
+  .tab {
+    padding: 8px 20px;
+    font-size: 12px;
+    width: 110px;
+    text-align: center;
+    margin-bottom: 10px;
+    position: relative;
+
+    &.company-tab {
+      background-color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px 12px 0 0;
+    }
+
+    &.company-tab:last-child {
+      margin-right: 8px;
+    }
+
+    /* espaçamento agora é controlado pelo gap do contêiner */
+
+    &.company-tab {
+      img {
+        width: 45px;
+        height: 45px;
+      }
+    }
+  }
+
+  /* Tooltip dinâmica centralizada acima do item */
+  .portal-tooltip {
+    position: absolute;
+    top: -37px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #3f3f3f;
+    color: #ffffff;
+    font-size: 14px;
+    padding: 3px 8px;
+    border-radius: 2px;
+    white-space: nowrap;
+    width: 100%;
+  }
+
+  .portal-tooltip::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -6px;
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid #3f3f3f;
+  }
+}
+
+.container-topo {
+  display: flex;
+  justify-content: space-between;
+  width: 1000px;
+  align-items: baseline;
+  padding-bottom: 5px;
+}
+
+
+.ordenacao-linha {
+    display: flex;
+    align-items: baseline;
+    gap: 0;
+    border-radius: 8px 8px 0 0;
+    padding: 0;
+    height: 40px;
+    bottom: 0;
+    justify-content: space-between;
+  }
+
+  .ordenacao-item {
+    display: flex;
+    align-items: center;
+    background-color:#40a52b;
+    padding: 6px 0;
+    padding-right: 2px;
+    gap: 7px;
+    position: relative;
+    margin-right: 15px;
+
+    .clear-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #ffffff;
+      color: rgb(255, 0, 0);
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+
+      transition: background-color 0.2s ease;
+
+      .clear-icon {
+        font-size: 18px;
+        font-weight: bold;
+      }
+    }
+
+    .clear-btn:hover {
+      background-color: #ebebeb;
+    }
+
+    .ordenacao-setas {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-left: 8px;
+      line-height: 0.6;
+
+      .seta-up,
+      .seta-down {
+        font-size: 12px;
+        color: #ffffff;
+        transition: color 0.2s ease;
+        padding: 1px 0;
+
+        &.ativa {
+          color: #28a745;
+          font-weight: bold;
+          font-weight: 11px;
+        }
+      }
+    }
+
+    .ordenacao-ponta {
+      position: absolute;
+      right: -16px;
+      top: 50%;
+      transform: translateY(-50%);
+      border-left: 16px solid #40a52b;
+      border-top: 15px solid transparent;
+      border-bottom: 15px solid transparent;
+    }
+  }
+
+  .ordenacao-btn {
+    display: flex;
+    align-items: center;
+    padding: 0 15px;
+    height: 100%;
+    border: none;
+    border-right: 1px solid #e0e0e0;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    color: #666;
+    transition: all 0.2s ease;
+
+    &:hover {
+      color: #28a745;
+    }
+
+    .ordenacao-setas {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-left: 8px;
+      line-height: 0.6;
+
+      .seta-up,
+      .seta-down {
+        font-size: 10px;
+        color: #818181;
+        transition: color 0.2s ease;
+        padding: 1px 0;
+
+        &.ativa {
+          color: #28a745;
+          font-weight: bold;
+          font-weight: 11px;
+        }
+      }
+    }
+  }
+
+  .exibir-container {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    margin-right: 10px;
+    height: 30px;
+    background: white;
+    border-radius: 13px 0 0 13px;
+    border: 1px solid #d4d4d4;
+    position: relative;
+    overflow: hidden;
+
+    .exibir-label {
+      font-size: 14px;
+      font-weight: 500;
+      color: #666;
+      padding-left: 10px;
+    }
+
+    .exibir-select {
+      border: none;
+      background: transparent;
+      font-size: 15px;
+      font-weight: 700;
+      color: rgb(83, 83, 83);
+      cursor: pointer;
+      outline: none;
+      appearance: none;
+      padding: 0 25px;
+      padding-left: 10px;
+      flex: 1;
+    }
+
+    .exibir-seta {
+      background-color: #28a745;
+      color: white;
+      font-size: 10px;
+      height: 100%;
+      width: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      right: 0;
+      top: 0;
+      pointer-events: none;
+    }
+  }
+
+/* Layout em duas colunas para iCarros e WebMotors */
+.pacotes-lista-dupla {
+  display: flex;
+  background-color: white;
+  width: 100%;
+}
+
+.coluna-portal {
+  flex: 1;
+}
+
+/* Ajustes de abas quando usadas dentro da coluna */
+.coluna-portal .portais-tabs-topo {
+  width: auto;
+  justify-content: center;
+}
+
+.coluna-portal .portais-tabs-topo .tab.company-tab {
+  width: auto;
+}
+
+/* Painel com logo e ícones abaixo da aba */
+.portal-panel {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.portal-icons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  .success {
+    color: #4caf50;
+  }
+  .warn {
+    color: #e53935;
+  }
+}
+
+// Container principal do veículo
+.veiculo-container {
+  display: flex;
+  height: 93%;
+  background-color: #e7e7e7;
+  margin: 7px;
+  justify-content: space-between;
+  gap: 0;
+}
+
+.veiculo-imagem {
+  position: relative;
+  width: 220px;
+  flex-shrink: 0;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+  }
+}
+
+.image-container {
+  display: flex;
+  height: 100%;
+  background-color: white;
+}
+
+.delete-btn {
+  background: #e7e7e7;
+  width: 32px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin-right: 6px;
+
+  mat-icon {
+    color: #e74c3c;
+    font-size: 22px;
+  }
+}
+
+.veiculo-info-principal {
+  padding: 15px 20px;
+  padding-right: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.veiculo-titulo {
+  margin-bottom: 10px;
+  background-color: white;
+  border-radius: 7px;
+  width: fit-content;
+  padding: 2px 10px;
+
+  .marca-modelo {
+    font-size: 16px;
+    font-weight: 700;
+    color: #616161;
+    display: block;
+  }
+}
+
+.veiculo-detalhes {
+  margin-bottom: 10px;
+      width: fit-content;
+
+  .detalhe-item {
+    display: flex;
+    margin-bottom: 3px;
+    font-size: 13px;
+    width: fit-content;
+
+    .label {
+      color: #2b2d2e;
+      margin-right: 5px;
+    }
+
+    .valor {
+      color: #00b14a;
+      font-weight: 500;
+    }
+  }
+}
+
+.veiculo-preco {
+  font-size: 17px;
+  color: #00b14a;
+  font-weight: 500;
+  background-color: #f6f6f6;
+  padding: 1px 30px;
+  margin-top: 10px;
+  display: inline-block;
+  position: relative;
+  z-index: 1;
+  right: -12px;
+}
+
+/* Cria a quina diagonal à esquerda cobrindo toda a altura */
+.veiculo-preco::before {
+  content: '';
+  position: absolute;
+  left: -14px;
+  top: 0;
+  width: 25px;
+  height: 99%;
+  background: #f6f6f6;
+  transform: skewX(-40deg);
+  z-index: 0;
+}
+
+// Seção de ações no centro
+.veiculo-acoes-centro {
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  align-items: end;
+  padding: 15px;
+  padding-bottom: 0;
+  padding-right: 0;
+  padding-left: 0;
+  width: 200px;
+  flex-shrink: 0;
+  position: relative;
+
+  /* Tooltip dinâmica ancorada ao botão Editar */
+  .editar-container {
+    position: relative;
+    display: inline-block;
+  }
+
+  .editar-container .editar-tooltip {
+    position: absolute;
+    top: -38px;
+    left: 38%;
+    transform: translateX(-50%);
+    background-color: #3f3f3f;
+    color: #ffffff;
+    font-size: 14px;
+    padding: 3px 10px;
+    border-radius: 2px;
+    white-space: nowrap;
+  }
+
+  .editar-container .editar-tooltip::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -6px;
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid #3f3f3f;
+  }
+
+  .editar-btn {
+    background-color: #1085c6;
+    color: white;
+    border: none;
+    padding: 2px 4px;
+    margin-right: 8px;
+    border-radius: 0 12px 12px 0;
+    font-weight: 500;
+    font-size: 12px;
+    margin-bottom: 7px;
+
+    mat-icon {
+      padding-top: 4px;
+      font-size: 16px;
+    }
+  }
+
+  .opcoes-icons {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    gap: 8px;
+    color: #7f8c8d;
+    font-size: 12px;
+
+    .container-opcao {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .opcoes-count {
+      font-weight: 500;
+      color: #00b14a;
+    }
+
+    .opcoes-text {
+      font-weight: 500;
+      color: #00b14a;
+    }
+  }
+}
+
+// Seção dos portais à direita
+.portais-section-direita {
+  background-color: white;
+  min-width: 250px;
+  flex-shrink: 0;
+  border-left: 1px solid #ecf0f1;
+  padding: 15px 0px 15px 0px;
+  display: flex;
+  flex-direction: column;
+}
+
+.portal-logo-ativo {
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: center;
+
+  .logo-circle {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 16px;
+    color: white;
+
+    &.icarros-logo {
+      background-color: #2980b9;
+    }
+
+    &.webmotors-logo {
+      background-color: #e74c3c;
+    }
+  }
+}
+
+.pacotes-lista-vertical {
+  border-right: 1px solid #cfcfcf;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.pacote-item {
+  display: flex;
+  align-items: start;
+  padding-left: 20px;
+  flex-direction: column;
+
+  .pacote-label {
+    font-size: 11px;
+    color: #7f8c8d;
+    font-weight: 500;
+    flex: 1;
+  }
+
+  .pacote-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+
+    input[type="checkbox"] {
+      width: 14px;
+      height: 14px;
+      accent-color: #34db34;
+    }
+
+    .valor-range {
+      font-size: 10px;
+      color: #2c3e50;
+      font-weight: 500;
+    }
+  }
+}
+
+.paginacao-rodape {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin: 0 auto;
+  padding: 0 20px;
+  background-color: white;
+  border-top: 1px solid #ecf0f1;
+  padding: 20px 0;
+}
+
+.pag-btn {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 8px 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  height: 40px;
+
+  &:hover:not(:disabled) {
+    background-color: #f8f9fa;
+    border-color: #3498db;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  mat-icon {
+    font-size: 18px;
+  }
+}
+
+.numeros-pagina {
+  display: flex;
+  gap: 5px;
+}
+
+.pag-numero {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 8px 12px;
+  cursor: pointer;
+  min-width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+
+  &:hover:not(.disabled):not(.active) {
+    background-color: #f8f9fa;
+    border-color: #3498db;
+  }
+
+  &.active {
+    background-color: #3498db;
+    color: white;
+    border-color: #3498db;
+  }
+
+  &.disabled {
+    cursor: default;
+    border: none;
+    background: none;
+    color: #7f8c8d;
+  }
+}

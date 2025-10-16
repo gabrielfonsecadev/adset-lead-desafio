@@ -1,0 +1,95 @@
+<div class="modal-header">
+  <h2 mat-dialog-title>{{ editId ? 'Editar Veículo' : 'Cadastrar Veículo' }}</h2>
+  <button mat-icon-button mat-dialog-close>
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<mat-dialog-content class="form-content">
+  <form [formGroup]="form">
+    <div class="linha">
+      <mat-form-field appearance="outline">
+        <mat-label>Marca</mat-label>
+        <input matInput formControlName="marca">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Modelo</mat-label>
+        <input matInput formControlName="modelo">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Ano</mat-label>
+        <mat-select formControlName="ano">
+          <mat-option *ngFor="let a of anos" [value]="a">{{ a }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="linha">
+      <mat-form-field appearance="outline">
+        <mat-label>Placa</mat-label>
+        <input matInput formControlName="placa">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Km</mat-label>
+        <input matInput type="number" formControlName="km">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Cor</mat-label>
+        <input matInput type="text" formControlName="cor">
+      </mat-form-field>
+    </div>
+
+    <div class="linha">
+      <mat-form-field appearance="outline" class="preco">
+        <mat-label>Preço</mat-label>
+        <input matInput type="number" formControlName="preco">
+      </mat-form-field>
+    </div>
+
+    <div class="linha">
+      <div class="opcionais">
+        <div class="titulo">Opcionais</div>
+        <div class="lista">
+          <mat-checkbox *ngFor="let opcional of opcionaisLista" [checked]="form.value.opcionaisIds?.includes(opcional.id)"
+            (change)="toggleOpcional(opcional.id, $event.checked)">
+            {{ opcional.nome }}
+          </mat-checkbox>
+        </div>
+      </div>
+    </div>
+
+    <div class="fotos">
+      <div class="file-input-container">
+        <input type="file" multiple accept="image/*" (change)="onFotosSelecionadas($event)"
+          [disabled]="fotosPreview.length >= 15" id="fileInput" style="display: none;">
+        <button type="button" (click)="triggerFileInput()" [disabled]="fotosPreview.length >= 15" class="add-photo-btn">
+          <mat-icon>add</mat-icon>
+          Adicionar imagem
+        </button>
+
+        <div class="titulo">Fotos (máx 15) - {{ fotosPreview.length }}/15</div>
+      </div>
+
+      <div class="preview" *ngIf="fotosPreview.length > 0">
+        <div class="img" *ngFor="let f of fotosPreview; let i = index">
+          <img [src]="f" [alt]="'Foto ' + (i + 1)" />
+          <button mat-mini-fab color="warn" (click)="removerFoto(i)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+      <div class="no-photos" *ngIf="fotosPreview.length === 0">
+        <p>Nenhuma foto selecionada</p>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions class="acoes">
+  <button mat-raised-button color="primary" (click)="salvar()" [disabled]="form.invalid">
+    Salvar
+  </button>
+  <button mat-button (click)="cancelar()">
+    Cancelar
+  </button>
+</mat-dialog-actions>

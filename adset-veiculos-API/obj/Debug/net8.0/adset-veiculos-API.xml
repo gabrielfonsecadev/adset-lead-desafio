@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>adset-veiculos-API</name>
+    </assembly>
+    <members>
+        <member name="M:AdsetVeiculos.API.Controllers.OpcionaisController.List">
+            <summary>
+            Obtém todos os opcionais
+            </summary>
+        </member>
+        <member name="M:AdsetVeiculos.API.Controllers.PacotesPortaisController.SalvarPacotePortal(AdsetVeiculos.API.Application.DTOs.SalvarPacotePortalDto)">
+            <summary>
+            Salva o pacote selecionado para um portal específico de um veículo
+            </summary>
+        </member>
+        <member name="M:AdsetVeiculos.API.Controllers.PacotesPortaisController.GetPacotesVeiculo(System.Int32)">
+            <summary>
+            Obtém todos os pacotes de portais de um veículo
+            </summary>
+        </member>
+        <member name="M:AdsetVeiculos.API.Controllers.PacotesPortaisController.RemoverPacotePortal(System.Int32)">
+            <summary>
+            Remove um pacote de portal de um veículo
+            </summary>
+        </member>
+        <member name="M:AdsetVeiculos.API.Controllers.PacotesPortaisController.SalvarMultiplosPacotes(System.Collections.Generic.List{AdsetVeiculos.API.Application.DTOs.SalvarPacotePortalDto})">
+            <summary>
+            Salva múltiplos pacotes de uma vez (para quando o usuário clica em "Salvar" na tela)
+            </summary>
+        </member>
+        <member name="M:AdsetVeiculos.API.Controllers.VeiculosController.GetVeiculos">
+            <summary>
+            Obtém todos os veículos
+            </summary>
+        </member>
+        <member name="M:AdsetVeiculos.API.Controllers.VeiculosController.GetVeiculo(System.Int32)">
+            <summary>
+            Obtém um veículo por ID
+            </summary>
+        </member>
+        <member name="M:AdsetVeiculos.API.Controllers.VeiculosController.BuscarVeiculos(System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Decimal},System.Nullable{System.Decimal})">
+            <summary>
+            Busca veículos por filtros
+            </summary>
+        </member>
+        <member name="M:AdsetVeiculos.API.Controllers.VeiculosController.CreateVeiculo(AdsetVeiculos.API.Application.DTOs.CreateVeiculoDto)">
+            <summary>
+            Cria um novo veículo
+            </summary>
+        </member>
+        <member name="M:AdsetVeiculos.API.Controllers.VeiculosController.UpdateVeiculo(System.Int32,AdsetVeiculos.API.Application.DTOs.UpdateVeiculoDto)">
+            <summary>
+            Atualiza um veículo existente
+            </summary>
+        </member>
+        <member name="M:AdsetVeiculos.API.Controllers.VeiculosController.DeleteVeiculo(System.Int32)">
+            <summary>
+            Exclui um veículo
+            </summary>
+        </member>
+        <member name="T:AdsetVeiculos.API.Migrations.InitialCreate">
+            <inheritdoc />
+        </member>
+        <member name="M:AdsetVeiculos.API.Migrations.InitialCreate.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:AdsetVeiculos.API.Migrations.InitialCreate.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:AdsetVeiculos.API.Migrations.InitialCreate.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+    </members>
+</doc>
