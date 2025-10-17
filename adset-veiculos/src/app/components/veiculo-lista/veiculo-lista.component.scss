@@ -321,11 +321,11 @@
 
 // Container principal do veículo
 .veiculo-container {
-  display: flex;
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
   height: 93%;
   background-color: #e7e7e7;
   margin: 7px;
-  justify-content: space-between;
   gap: 0;
 }
 
@@ -356,10 +356,15 @@
   justify-content: center;
   cursor: pointer;
   margin-right: 6px;
+  transition: background 0.1s ease-in-out;
 
   mat-icon {
     color: #e74c3c;
     font-size: 22px;
+  }
+
+  &:hover {
+    background: #dadada;
   }
 }
 
@@ -418,7 +423,6 @@
   display: inline-block;
   position: relative;
   z-index: 1;
-  right: -12px;
 }
 
 /* Cria a quina diagonal à esquerda cobrindo toda a altura */
@@ -440,10 +444,7 @@
   flex-direction: column;
   justify-content: end;
   align-items: end;
-  padding: 15px;
-  padding-bottom: 0;
-  padding-right: 0;
-  padding-left: 0;
+  padding: 15px 0 0 0;
   width: 200px;
   flex-shrink: 0;
   position: relative;
@@ -504,6 +505,7 @@
     gap: 8px;
     color: #7f8c8d;
     font-size: 12px;
+    padding-right: 15px;
 
     .container-opcao {
       display: flex;
@@ -527,11 +529,11 @@
 .portais-section-direita {
   background-color: white;
   min-width: 250px;
-  flex-shrink: 0;
   border-left: 1px solid #ecf0f1;
-  padding: 15px 0px 15px 0px;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .portal-logo-ativo {
@@ -564,21 +566,25 @@
   border-right: 1px solid #cfcfcf;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 17px;
   width: 100%;
+  height: 160px;
+  justify-content: center;
 }
 
 .pacote-item {
   display: flex;
-  align-items: start;
-  padding-left: 20px;
-  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-left: 15px;
+  flex-direction: row;
 
   .pacote-label {
-    font-size: 11px;
-    color: #7f8c8d;
+    font-size: 13px;
+    color: #575c5e;
     font-weight: 500;
     flex: 1;
+    padding-left: 5px;
   }
 
   .pacote-checkbox {

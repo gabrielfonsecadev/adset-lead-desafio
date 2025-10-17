@@ -117,47 +117,47 @@ public class PacotesPortaisController : ControllerBase
             return BadRequest("Nenhum pacote foi informado.");
         }
 
-        var veiculoId = pacotes.First().VeiculoId;
-
-        // Verificar se todos os pacotes são do mesmo veículo
-        if (pacotes.Any(p => p.VeiculoId != veiculoId))
+        // Verificar se todos os veículos existem
+        var veiculosIds = pacotes.Select(p => p.VeiculoId).Distinct().ToList();
+        foreach (var veiculoId in veiculosIds)
         {
-            return BadRequest("Todos os pacotes devem ser do mesmo veículo.");
-        }
-
-        // Verificar se o veículo existe
-        if (!await _veiculoRepository.ExistsAsync(veiculoId))
-        {
-            return NotFound($"Veículo com ID {veiculoId} não encontrado.");
-        }
-
-        var pacotesSalvos = new List<VeiculoPacotePortal>();
-
-        foreach (var pacoteDto in pacotes)
-        {
-            // Verificar se já existe um pacote para este portal
-            var pacoteExistente = await _context.VeiculosPacotesPortais
-                .FirstOrDefaultAsync(p => p.VeiculoId == pacoteDto.VeiculoId &&
-                                         p.TipoPortal == pacoteDto.TipoPortal);
-
-            if (pacoteExistente != null)
+            if (!await _veiculoRepository.ExistsAsync(veiculoId))
             {
-                // Atualizar pacote existente
-                pacoteExistente.TipoPacote = pacoteDto.TipoPacote;
-                pacotesSalvos.Add(pacoteExistente);
+                return NotFound($"Veículo com ID {veiculoId} não encontrado.");
             }
-            else
+        }
+
+        using var transaction = await _context.Database.BeginTransactionAsync();
+        
+        try
+        {
+            var pacotesSalvos = new List<VeiculoPacotePortal>();
+
+            // Primeiro, remover todos os pacotes existentes dos veículos afetados
+            var pacotesExistentes = await _context.VeiculosPacotesPortais
+                .Where(p => veiculosIds.Contains(p.VeiculoId))
+                .ToListAsync();
+            
+            _context.VeiculosPacotesPortais.RemoveRange(pacotesExistentes);
+
+            // Agora adicionar os novos pacotes
+            foreach (var pacoteDto in pacotes)
             {
-                // Criar novo pacote
                 var novoPacote = _mapper.Map<VeiculoPacotePortal>(pacoteDto);
                 _context.VeiculosPacotesPortais.Add(novoPacote);
                 pacotesSalvos.Add(novoPacote);
             }
+
+            await _context.SaveChangesAsync();
+            await transaction.CommitAsync();
+
+            var pacotesSalvosDto = _mapper.Map<IEnumerable<VeiculoPacotePortalDto>>(pacotesSalvos);
+            return Ok(pacotesSalvosDto);
         }
-
-        await _context.SaveChangesAsync();
-
-        var pacotesSalvosDto = _mapper.Map<IEnumerable<VeiculoPacotePortalDto>>(pacotesSalvos);
-        return Ok(pacotesSalvosDto);
+        catch (Exception ex)
+        {
+            await transaction.RollbackAsync();
+            return StatusCode(500, $"Erro interno do servidor: {ex.Message}");
+        }
     }
 }

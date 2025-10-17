@@ -86,7 +86,7 @@ public class VeiculoRepository : IVeiculoRepository
         return await query.AnyAsync();
     }
 
-    public async Task<IEnumerable<Veiculo>> GetByFiltrosAsync(string? marca = null, string? modelo = null, int? anoMin = null, int? anoMax = null, decimal? precoMin = null, decimal? precoMax = null)
+    public async Task<IEnumerable<Veiculo>> GetByFiltrosAsync(string? placa = null, string? marca = null, string? modelo = null, int? anoMin = null, int? anoMax = null, decimal? precoMin = null, decimal? precoMax = null, string? opcionais = null, string? fotos = null, string? cor = null)
     {
         var query = _context.Veiculos
             .Include(v => v.Fotos)
@@ -94,6 +94,9 @@ public class VeiculoRepository : IVeiculoRepository
                 .ThenInclude(vo => vo.Opcional)
             .Include(v => v.PacotesPortais)
             .AsQueryable();
+
+        if (!string.IsNullOrEmpty(placa))
+            query = query.Where(v => v.Placa.Contains(placa));
 
         if (!string.IsNullOrEmpty(marca))
             query = query.Where(v => v.Marca.Contains(marca));
@@ -112,6 +115,23 @@ public class VeiculoRepository : IVeiculoRepository
 
         if (precoMax.HasValue)
             query = query.Where(v => v.Preco <= precoMax.Value);
+
+        if (!string.IsNullOrEmpty(opcionais))
+        {
+            var opcionaisArray = opcionais.Split(',');
+            query = query.Where(v => v.Opcionais.Any(vo => opcionaisArray.Contains(vo.Opcional.Nome)));
+        }
+
+        if (!string.IsNullOrEmpty(fotos))
+        {
+            if (fotos == "com")
+                query = query.Where(v => v.Fotos.Any());
+            else if (fotos == "sem")
+                query = query.Where(v => !v.Fotos.Any());
+        }
+
+        if (!string.IsNullOrEmpty(cor))
+            query = query.Where(v => v.Cor.Contains(cor));
 
         return await query.OrderByDescending(v => v.DataCadastro).ToListAsync();
     }

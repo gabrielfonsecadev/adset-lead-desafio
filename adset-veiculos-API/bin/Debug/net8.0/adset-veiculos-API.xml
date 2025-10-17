@@ -39,7 +39,7 @@
             Obtém um veículo por ID
             </summary>
         </member>
-        <member name="M:AdsetVeiculos.API.Controllers.VeiculosController.BuscarVeiculos(System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Decimal},System.Nullable{System.Decimal})">
+        <member name="M:AdsetVeiculos.API.Controllers.VeiculosController.BuscarVeiculos(System.String,System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Decimal},System.Nullable{System.Decimal},System.String,System.String,System.String)">
             <summary>
             Busca veículos por filtros
             </summary>

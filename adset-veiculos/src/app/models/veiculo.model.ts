@@ -17,31 +17,20 @@ export interface Veiculo {
   pacoteWebMotors?: string;
   portalAtivo?: 'icarros' | 'webmotors';
   icarros?: {
-    diamanteFeirado?: boolean;
+    bronze?: boolean;
     diamante?: boolean;
     platinum?: boolean;
+    basico?: boolean;
   };
   webmotors?: {
     basico?: boolean;
-    diamanteFeirado?: boolean;
+    bronze?: boolean;
     diamante?: boolean;
     platinum?: boolean;
   };
 }
 
-export interface CreateVeiculoDto {
-  marca: string;
-  modelo: string;
-  ano: number;
-  placa: string;
-  km?: number;
-  cor: string;
-  preco: number;
-  opcionaisIds: number[];
-  fotos: CreateVeiculoFotoDto[];
-}
-
-export interface UpdateVeiculoDto {
+export interface InsertUpdVeiculoDto {
   marca: string;
   modelo: string;
   ano: number;
@@ -82,7 +71,7 @@ export interface VeiculoPacotePortalDto {
   veiculoId: number;
   tipoPortal: TipoPortal;
   tipoPacote: TipoPacote;
-  dataSelecao: string;
+  dataSelecao?: string;
   dataAtualizacao?: string;
 }
 

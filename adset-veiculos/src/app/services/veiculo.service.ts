@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { Veiculo, FiltroVeiculo, CreateVeiculoDto, UpdateVeiculoDto } from '../models/veiculo.model';
+import { Veiculo, FiltroVeiculo, InsertUpdVeiculoDto } from '../models/veiculo.model';
 import { environment } from '../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
@@ -40,7 +40,7 @@ export class VeiculoService {
     return this.http.get<Veiculo>(`${this.apiUrl}/${id}`);
   }
 
-  addVeiculo(createVeiculoDto: CreateVeiculoDto): Observable<Veiculo> {
+  addVeiculo(createVeiculoDto: InsertUpdVeiculoDto): Observable<Veiculo> {
     return this.http.post<Veiculo>(this.apiUrl, createVeiculoDto).pipe(
       tap(novoVeiculo => {
         this.veiculos.push(novoVeiculo);
@@ -49,7 +49,7 @@ export class VeiculoService {
     );
   }
 
-  updateVeiculo(id: number, updateVeiculoDto: UpdateVeiculoDto): Observable<Veiculo> {
+  updateVeiculo(id: number, updateVeiculoDto: InsertUpdVeiculoDto): Observable<Veiculo> {
     return this.http.put<Veiculo>(`${this.apiUrl}/${id}`, updateVeiculoDto).pipe(
       tap(veiculoAtualizado => {
         const idx = this.veiculos.findIndex(v => v.id === id);
@@ -105,7 +105,55 @@ export class VeiculoService {
 
   // Método de busca via API
   buscarVeiculos(filtro: FiltroVeiculo): Observable<Veiculo[]> {
-    return this.http.post<Veiculo[]>(`${this.apiUrl}/buscar`, filtro).pipe(
+    // Construir parâmetros de query baseados no filtro
+    let params = new URLSearchParams();
+
+    if (filtro.placa) {
+      params.append('placa', filtro.placa);
+    }
+    if (filtro.marca) {
+      params.append('marca', filtro.marca);
+    }
+    if (filtro.modelo) {
+      params.append('modelo', filtro.modelo);
+    }
+    if (filtro.anoMin) {
+      params.append('anoMin', filtro.anoMin.toString());
+    }
+    if (filtro.anoMax) {
+      params.append('anoMax', filtro.anoMax.toString());
+    }
+
+    // Converter precoFaixa para precoMin e precoMax
+    if (filtro.precoFaixa) {
+      switch (filtro.precoFaixa) {
+        case '10-50':
+          params.append('precoMin', '10000');
+          params.append('precoMax', '50000');
+          break;
+        case '50-90':
+          params.append('precoMin', '50000');
+          params.append('precoMax', '90000');
+          break;
+        case '90+':
+          params.append('precoMin', '90000');
+          break;
+      }
+    }
+    if (filtro.fotos) {
+      params.append('fotos', filtro.fotos);
+    }
+    if (filtro.cor) {
+      params.append('cor', filtro.cor);
+    }
+    if (filtro.opcionaisTexto) {
+      params.append('opcionais', filtro.opcionaisTexto);
+    }
+
+    const queryString = params.toString();
+    const url = queryString ? `${this.apiUrl}/buscar?${queryString}` : `${this.apiUrl}/buscar`;
+
+    return this.http.get<Veiculo[]>(url).pipe(
       tap(veiculos => {
         this.veiculos = veiculos;
         this.veiculosSubject.next([...this.veiculos]);

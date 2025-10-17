@@ -19,7 +19,7 @@ export class OpcionalService {
 
   private inicializarDados(): void {
     if (!this.dadosCarregados) {
-      this.getOpcionaisAtivos().subscribe(opcionais => {
+      this.getOpcionais().subscribe(opcionais => {
         this.opcionais = opcionais;
         this.opcionaisSubject.next([...this.opcionais]);
         this.dadosCarregados = true;
@@ -29,10 +29,6 @@ export class OpcionalService {
 
   getOpcionais(): Observable<OpcionalDto[]> {
     return this.http.get<OpcionalDto[]>(this.apiUrl);
-  }
-
-  getOpcionaisAtivos(): Observable<OpcionalDto[]> {
-    return this.http.get<OpcionalDto[]>(`${this.apiUrl}/ativos`);
   }
 
   getOpcional(id: number): Observable<OpcionalDto> {

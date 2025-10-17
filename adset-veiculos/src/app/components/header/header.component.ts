@@ -74,4 +74,18 @@ export class HeaderComponent {
   buscar() {
     this.actions.emitirBuscar(this.filtro);
   }
+
+  limparFiltros() {
+    this.filtro = {
+      placa: '',
+      marca: '',
+      modelo: '',
+      anoMin: undefined,
+      anoMax: undefined,
+      precoFaixa: '',
+      fotos: '',
+      cor: '',
+      opcionaisTexto: ''
+    };
+  }
 }

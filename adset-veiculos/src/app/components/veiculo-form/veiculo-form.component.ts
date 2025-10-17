@@ -1,9 +1,10 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { VeiculoService } from '../../services/veiculo.service';
 import { OpcionalService } from '../../services/opcional.service';
-import { Veiculo, CreateVeiculoDto, UpdateVeiculoDto, OpcionalDto, CreateVeiculoFotoDto } from '../../models/veiculo.model';
+import { Veiculo, InsertUpdVeiculoDto, OpcionalDto, CreateVeiculoFotoDto } from '../../models/veiculo.model';
 
 @Component({
   selector: 'app-veiculo-form',
@@ -25,6 +26,7 @@ export class VeiculoFormComponent implements OnInit {
     private fb: FormBuilder,
     private service: VeiculoService,
     private opcionalService: OpcionalService,
+    private snackBar: MatSnackBar,
     public dialogRef: MatDialogRef<VeiculoFormComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { veiculo?: Veiculo }
   ) {
@@ -161,9 +163,7 @@ export class VeiculoFormComponent implements OnInit {
       id: foto.id // Incluir ID se existir (para fotos existentes)
     }));
 
-    if (this.editId) {
-      // Atualização
-      const updateDto: UpdateVeiculoDto = {
+    var veiculoDto: InsertUpdVeiculoDto = {
         marca: formValue.marca,
         modelo: formValue.modelo,
         ano: formValue.ano,
@@ -172,29 +172,45 @@ export class VeiculoFormComponent implements OnInit {
         cor: formValue.cor,
         preco: formValue.preco,
         opcionaisIds: formValue.opcionaisIds,
-        fotos: fotosDto,
-        fotosParaRemover: this.fotosToRemove
+      fotos: fotosDto,
       };
 
-      this.service.updateVeiculo(this.editId, updateDto).subscribe(() => {
-        this.dialogRef.close(true);
+    if (this.editId) {
+      // Atualização
+      veiculoDto.fotosParaRemover = this.fotosToRemove
+      this.service.updateVeiculo(this.editId, veiculoDto).subscribe({
+        next: () => {
+          this.snackBar.open('Veículo atualizado com sucesso!', 'Fechar', {
+            duration: 3000,
+            panelClass: ['success-snackbar']
+          });
+          this.dialogRef.close(true);
+        },
+        error: (error) => {
+          console.error('Erro ao atualizar veículo:', error);
+          this.snackBar.open('Erro ao atualizar veículo. Tente novamente.', 'Fechar', {
+            duration: 5000,
+            panelClass: ['error-snackbar']
+          });
+        }
       });
     } else {
       // Criação
-      const createDto: CreateVeiculoDto = {
-        marca: formValue.marca,
-        modelo: formValue.modelo,
-        ano: formValue.ano,
-        placa: formValue.placa,
-        km: formValue.km,
-        cor: formValue.cor,
-        preco: formValue.preco,
-        opcionaisIds: formValue.opcionaisIds,
-        fotos: fotosDto
-      };
-
-      this.service.addVeiculo(createDto).subscribe(() => {
-        this.dialogRef.close(true);
+      this.service.addVeiculo(veiculoDto).subscribe({
+        next: () => {
+          this.snackBar.open('Veículo cadastrado com sucesso!', 'Fechar', {
+            duration: 3000,
+            panelClass: ['success-snackbar']
+          });
+          this.dialogRef.close(true);
+        },
+        error: (error) => {
+          console.error('Erro ao cadastrar veículo:', error);
+          this.snackBar.open('Erro ao cadastrar veículo. Tente novamente.', 'Fechar', {
+            duration: 5000,
+            panelClass: ['error-snackbar']
+          });
+        }
       });
     }
   }

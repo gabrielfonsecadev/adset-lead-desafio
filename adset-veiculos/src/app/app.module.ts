@@ -12,19 +12,22 @@ import { MatCardModule } from '@angular/material/card';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
 import { VeiculoFormComponent } from './components/veiculo-form/veiculo-form.component';
 import { VeiculoListaComponent } from './components/veiculo-lista/veiculo-lista.component';
+import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     VeiculoFormComponent,
-    VeiculoListaComponent
+    VeiculoListaComponent,
+    ConfirmDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -41,6 +44,7 @@ import { VeiculoListaComponent } from './components/veiculo-lista/veiculo-lista.
     MatToolbarModule,
     MatDialogModule,
     MatCheckboxModule,
+    MatSnackBarModule,
     AppRoutingModule
   ],
   providers: [],

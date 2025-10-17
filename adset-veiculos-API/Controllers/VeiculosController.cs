@@ -70,14 +70,18 @@ public class VeiculosController : ControllerBase
     /// </summary>
     [HttpGet("buscar")]
     public async Task<ActionResult<IEnumerable<VeiculoDto>>> BuscarVeiculos(
+        [FromQuery] string? placa = null,
         [FromQuery] string? marca = null,
         [FromQuery] string? modelo = null,
         [FromQuery] int? anoMin = null,
         [FromQuery] int? anoMax = null,
         [FromQuery] decimal? precoMin = null,
-        [FromQuery] decimal? precoMax = null)
+        [FromQuery] decimal? precoMax = null,
+        [FromQuery] string? opcionais = null,
+        [FromQuery] string? fotos = null,
+        [FromQuery] string? cor = null)
     {
-        var veiculos = await _veiculoRepository.GetByFiltrosAsync(marca, modelo, anoMin, anoMax, precoMin, precoMax);
+        var veiculos = await _veiculoRepository.GetByFiltrosAsync(placa, marca, modelo, anoMin, anoMax, precoMin, precoMax, opcionais, fotos, cor);
         var veiculosDto = _mapper.Map<IEnumerable<VeiculoDto>>(veiculos);
 
         return Ok(veiculosDto);
@@ -101,22 +105,22 @@ public class VeiculosController : ControllerBase
             return BadRequest($"Já existe um veículo cadastrado com a placa {createVeiculoDto.Placa}.");
         }
 
-        // Verificar se os opcionais existem
-        if (createVeiculoDto.OpcionaisIds.Any())
-        {
-            foreach (var opcionalId in createVeiculoDto.OpcionaisIds)
-            {
-                if (!await _opcionalRepository.ExistsAsync(opcionalId))
-                {
-                    return BadRequest($"Opcional com ID {opcionalId} não encontrado.");
-                }
-            }
-        }
-
         using var transaction = await _context.Database.BeginTransactionAsync();
         try
         {
             var veiculo = _mapper.Map<Veiculo>(createVeiculoDto);
+
+            if (createVeiculoDto.OpcionaisIds.Any())
+            {
+                foreach (var opcionalId in createVeiculoDto.OpcionaisIds)
+                {
+                    veiculo.Opcionais.Add(new VeiculoOpcional
+                    {
+                        OpcionalId = opcionalId,
+                        VeiculoId = veiculo.Id
+                    });
+                }
+            }
 
             // Adicionar fotos
             foreach (var fotoDto in createVeiculoDto.Fotos)
@@ -169,18 +173,6 @@ public class VeiculosController : ControllerBase
         if (await _veiculoRepository.PlacaExistsAsync(updateVeiculoDto.Placa, id))
         {
             return BadRequest($"Já existe outro veículo cadastrado com a placa {updateVeiculoDto.Placa}.");
-        }
-
-        // Verificar se os opcionais existem
-        if (updateVeiculoDto.OpcionaisIds.Any())
-        {
-            foreach (var opcionalId in updateVeiculoDto.OpcionaisIds)
-            {
-                if (!await _opcionalRepository.ExistsAsync(opcionalId))
-                {
-                    return BadRequest($"Opcional com ID {opcionalId} não encontrado.");
-                }
-            }
         }
 
         // Atualizar propriedades básicas

@@ -67,6 +67,7 @@ public class OpcionalDto
 public class VeiculoPacotePortalDto
 {
     public int Id { get; set; }
+    public int VeiculoId { get; set; }
     public TipoPortal TipoPortal { get; set; }
     public TipoPacote TipoPacote { get; set; }
 }
