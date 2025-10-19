@@ -4,7 +4,8 @@
   align-items: stretch;
   padding: 0;
   background-color: #e7e7e7;
-  height: 90px;
+  height: auto;
+  max-height: 90px;
 }
 
 .logo {
@@ -14,7 +15,7 @@
 
 .logo-container {
   width: 100%;
-  min-width: 1100px;
+  min-width: auto;
   justify-content: flex-start;
   padding: 10px 20px;
   border-bottom: 1px solid #cacaca;
@@ -84,6 +85,8 @@
   display: flex;
   align-items: center;
   gap: 15px;
+  width: 100%;
+  max-width: 650px;
 }
 
 .export-btn {
@@ -139,7 +142,7 @@
 .save-container {
   display: flex;
   align-items: center;
-  margin-left: 250px;
+  margin-left: auto;
   cursor: pointer;
   gap: 8px;
 
@@ -169,7 +172,8 @@
 
 /* Segunda barra - branca com filtros e controles */
 .bottom-bar {
-  width: 1100px;
+  width: 100%;
+  max-width: 1100px;
   background-color: #e7e7e7;
   margin-left: 85px;
 }
@@ -321,4 +325,199 @@
 .toggle-btn:hover {
   background-color: #f8f8f8 !important;
   transition: background-color 0.1s ease-in-out;
+}
+
+/* Media Queries para Responsividade */
+
+/* Tablets e telas médias (768px - 1024px) */
+@media (max-width: 1190px) {
+  .top-bar {
+    margin-left: 20px;
+    padding: 10px 15px;
+    gap: 15px;
+  }
+
+  .bottom-bar {
+    margin-left: 20px;
+    width: 95%;
+  }
+
+  .stats-section {
+    gap: 15px;
+  }
+
+  .diagonal-separator {
+    margin: 0 10px;
+  }
+
+  .save-container {
+    .save-text {
+      font-size: 16px;
+      padding: 4px 15px;
+    }
+  }
+
+  .filtros-row {
+    gap: 3px;
+  }
+
+  .input-group {
+    input {
+      width: 100px !important;
+    }
+  }
+}
+
+/* Smartphones e telas pequenas (até 768px) */
+@media (max-width: 768px) {
+  .toolbar {
+    height: auto;
+  }
+
+  .logo-container {
+    padding: 10px 15px;
+  }
+
+  .logo {
+    width: 80px;
+    height: 56px;
+  }
+
+  .top-bar {
+    margin-left: 0;
+    padding: 10px;
+    flex-direction: column;
+    gap: 15px;
+    align-items: stretch;
+  }
+
+  .stats-section {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .actions-section {
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .save-container {
+    margin-left: 0;
+    justify-content: center;
+
+    .save-text {
+      font-size: 14px;
+      padding: 4px 12px;
+    }
+  }
+
+  .bottom-bar {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .filtros-container {
+    margin-left: 0;
+    padding: 10px;
+  }
+
+  .filtros-row {
+    flex-direction: column;
+    gap: 10px;
+    align-items: stretch;
+  }
+
+  .input-group {
+    width: 100% !important;
+
+    input {
+      width: 100% !important;
+    }
+  }
+
+  .clear-btn {
+    margin-top: 10px;
+    margin-left: 0;
+    align-self: center;
+  }
+
+  .diagonal-separator,
+  .line-separator {
+    display: none;
+  }
+
+  .stat-item {
+    margin: 5px 0;
+  }
+}
+
+/* Telas muito pequenas (até 480px) */
+@media (max-width: 480px) {
+  .logo {
+    width: 70px;
+    height: 49px;
+  }
+
+  .logo-container {
+    padding: 8px 10px;
+  }
+
+  .top-bar {
+    padding: 8px;
+  }
+
+  .stats-section {
+    gap: 8px;
+  }
+
+  .stat-label {
+    font-size: 14px;
+  }
+
+  .stat-total,
+  .stat-com-fotos,
+  .stat-sem-fotos {
+    font-size: 16px;
+  }
+
+  .export-btn {
+    font-size: 14px;
+
+    img {
+      width: 40px;
+      height: 40px;
+    }
+  }
+
+  .car-btn {
+    width: 45px;
+    height: 45px;
+
+    img {
+      width: 45px;
+      height: 45px;
+    }
+  }
+
+  .save-container {
+    .save-icon-circle {
+      width: 45px;
+      height: 45px;
+    }
+
+    .save-text {
+      font-size: 12px;
+      padding: 3px 10px;
+    }
+  }
+
+  .filtros-container {
+    padding: 8px;
+  }
+
+  .search-btn {
+    font-size: 16px;
+    padding: 2px 15px;
+  }
 }

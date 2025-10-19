@@ -170,17 +170,276 @@
   justify-content: flex-end;
 }
 
-@media (max-width: 768px) {
-  .linha {
-    grid-template-columns: 1fr;
+/* Media Queries para Responsividade */
+
+/* Tablets e telas médias (768px - 1024px) */
+@media (max-width: 1024px) {
+  .modal-header {
+    padding: 14px 20px;
+    
+    h2 {
+      font-size: 18px;
+    }
   }
 
-  .opcionais .lista {
-    grid-template-columns: 1fr;
+  .form-content {
+    padding: 20px;
+    max-height: 65vh;
+  }
+
+  .linha {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  .preco {
+    grid-column: span 1;
+  }
+
+  .opcionais {
+    grid-column: span 2;
+
+    .lista {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 6px;
+    }
   }
 
   .fotos .preview {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 10px;
+
+    .img img {
+      height: 80px;
+    }
+  }
+
+  .acoes {
+    padding: 14px 20px;
+    gap: 10px;
+  }
+}
+
+/* Smartphones e telas pequenas (até 768px) */
+@media (max-width: 768px) {
+  .modal-header {
+    padding: 12px 16px;
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+    
+    h2 {
+      font-size: 16px;
+    }
+
+    button {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+    }
+  }
+
+  .form-content {
+    padding: 16px;
+    max-height: 60vh;
+  }
+
+  .linha {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .preco {
+    grid-column: span 1;
+  }
+
+  .opcionais {
+    grid-column: span 1;
+
+    .titulo {
+      font-size: 15px;
+      margin-bottom: 10px;
+    }
+
+    .lista {
+      grid-template-columns: 1fr;
+      gap: 4px;
+
+      mat-checkbox {
+        margin-bottom: 6px;
+      }
+    }
+  }
+
+  .fotos {
+    margin-top: 20px;
+
+    .titulo {
+      font-size: 15px;
+      margin-top: 6px;
+    }
+
+    .file-input-container {
+      margin-bottom: 12px;
+
+      .add-photo-btn {
+        width: 100%;
+        justify-content: center;
+        padding: 10px 20px;
+        font-size: 13px;
+      }
+    }
+
+    .preview {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+
+      .img {
+        img {
+          height: 70px;
+        }
+
+        button {
+          width: 20px;
+          height: 20px;
+          top: 2px;
+          right: 2px;
+
+          mat-icon {
+            font-size: 14px;
+            margin-top: 6px;
+          }
+        }
+      }
+    }
+
+    .no-photos {
+      padding: 30px 15px;
+      margin-top: 6px;
+
+      p {
+        font-size: 14px;
+      }
+    }
+  }
+
+  .acoes {
+    padding: 12px 16px;
+    gap: 8px;
+    flex-direction: column-reverse;
+
+    button {
+      width: 100%;
+      padding: 12px;
+    }
+  }
+}
+
+/* Telas muito pequenas (até 480px) */
+@media (max-width: 480px) {
+  .modal-header {
+    padding: 10px 12px;
+    
+    h2 {
+      font-size: 15px;
+    }
+
+    button {
+      top: 6px;
+      right: 6px;
+    }
+  }
+
+  .form-content {
+    padding: 12px;
+    max-height: 55vh;
+  }
+
+  .linha {
+    gap: 6px;
+    margin-bottom: 10px;
+  }
+
+  .opcionais {
+    .titulo {
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+
+    .lista {
+      gap: 2px;
+
+      mat-checkbox {
+        margin-bottom: 4px;
+        font-size: 13px;
+      }
+    }
+  }
+
+  .fotos {
+    margin-top: 15px;
+
+    .titulo {
+      font-size: 14px;
+      margin-top: 4px;
+    }
+
+    .file-input-container {
+      margin-bottom: 10px;
+
+      .add-photo-btn {
+        padding: 8px 16px;
+        font-size: 12px;
+        gap: 6px;
+
+        mat-icon {
+          font-size: 18px;
+          width: 18px;
+          height: 18px;
+        }
+      }
+    }
+
+    .preview {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 6px;
+
+      .img {
+        img {
+          height: 60px;
+        }
+
+        button {
+          width: 18px;
+          height: 18px;
+
+          mat-icon {
+            font-size: 12px;
+            margin-top: 4px;
+          }
+        }
+      }
+    }
+
+    .no-photos {
+      padding: 20px 10px;
+
+      p {
+        font-size: 13px;
+      }
+    }
+  }
+
+  .acoes {
+    padding: 10px 12px;
+    gap: 6px;
+
+    button {
+      padding: 10px;
+      font-size: 13px;
+    }
   }
 }
 

@@ -1,10 +1,28 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { FormBuilder, Validators, FormGroup, AbstractControl, ValidationErrors } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { VeiculoService } from '../../services/veiculo.service';
 import { OpcionalService } from '../../services/opcional.service';
 import { Veiculo, InsertUpdVeiculoDto, OpcionalDto, CreateVeiculoFotoDto } from '../../models/veiculo.model';
+
+// Interfaces para melhor organização (SRP)
+interface FormValidationResult {
+  isValid: boolean;
+  message: string;
+}
+
+interface ImageProcessingResult {
+  success: boolean;
+  images: string[];
+  message?: string;
+}
+
+interface ImageConstraints {
+  maxFiles: number;
+  maxSizeBytes: number;
+  allowedTypes: string[];
+}
 
 @Component({
   selector: 'app-veiculo-form',
@@ -22,6 +40,13 @@ export class VeiculoFormComponent implements OnInit {
 
   form: FormGroup;
 
+  // Configurações centralizadas (OCP)
+  private readonly imageConstraints: ImageConstraints = {
+    maxFiles: 15,
+    maxSizeBytes: 5 * 1024 * 1024, // 5MB
+    allowedTypes: ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
+  };
+
   constructor(
     private fb: FormBuilder,
     private service: VeiculoService,
@@ -30,117 +55,254 @@ export class VeiculoFormComponent implements OnInit {
     public dialogRef: MatDialogRef<VeiculoFormComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { veiculo?: Veiculo }
   ) {
-    this.form = this.fb.group({
-      marca: ['', Validators.required],
-      modelo: ['', Validators.required],
-      ano: [undefined as unknown as number, Validators.required],
-      placa: ['', Validators.required],
-      km: [undefined as unknown as number],
-      cor: ['', Validators.required],
-      preco: [undefined as unknown as number, Validators.required],
-      opcionaisIds: [[] as number[]],
-      fotos: [[] as string[]]
-    });
+    this.form = this.createVehicleForm();
   }
 
   ngOnInit() {
-    // Carregar opcionais do backend
+    this.loadOptionals();
+    this.initializeFormData();
+  }
+
+  // SRP: Método específico para criar o formulário
+  private createVehicleForm(): FormGroup {
+    // Preparar fotos existentes com IDs preservados
+    const fotosExistentes = this.veiculo?.fotos?.map(foto => ({
+      id: foto.id,
+      imagemBase64: foto.imagemBase64,
+      nomeArquivo: foto.nomeArquivo,
+      ordem: foto.ordem
+    })) || [];
+
+    return this.fb.group({
+      marca: [this.veiculo?.marca || '', Validators.required],
+      modelo: [this.veiculo?.modelo || '', Validators.required],
+      ano: [this.veiculo?.ano || null, [Validators.required, this.yearValidator.bind(this)]],
+      placa: [this.veiculo?.placa || '', Validators.required],
+      km: [this.veiculo?.km || null, [Validators.min(0)]],
+      cor: [this.veiculo?.cor || '', Validators.required],
+      preco: [this.veiculo?.preco || null, [Validators.required, Validators.min(0.01)]],
+      opcionaisIds: [this.veiculo?.opcionais?.map(o => o.id) || []],
+      fotos: [fotosExistentes]
+    });
+  }
+
+  // SRP: Validador customizado para ano
+  private yearValidator(control: AbstractControl): ValidationErrors | null {
+    const year = control.value;
+    if (!year) return null;
+
+    const currentYear = new Date().getFullYear();
+    const minYear = 1900;
+
+    if (year < minYear || year > currentYear + 1) {
+      return { invalidYear: { min: minYear, max: currentYear + 1, actual: year } };
+    }
+
+    return null;
+  }
+
+  // SRP: Carregamento de opcionais
+  private loadOptionals(): void {
     this.opcionalService.getOpcionaisCarregados().subscribe(opcionais => {
       this.opcionaisLista = opcionais;
     });
+  }
 
+  // SRP: Inicialização dos dados do formulário
+  private initializeFormData(): void {
     if (this.data?.veiculo) {
       this.veiculo = this.data.veiculo;
       this.editId = this.veiculo.id;
-
-      // Mapear opcionais para IDs
-      const opcionaisIds = this.veiculo.opcionais?.map(o => o.id) || [];
-
-      this.form.patchValue({
-        marca: this.veiculo.marca,
-        modelo: this.veiculo.modelo,
-        ano: this.veiculo.ano,
-        placa: this.veiculo.placa,
-        km: this.veiculo.km,
-        cor: this.veiculo.cor,
-        preco: this.veiculo.preco,
-        opcionaisIds: opcionaisIds,
-        fotos: this.veiculo.fotos || []
-      });
-
-      // Manter preview das fotos existentes
-      this.fotosPreview = this.veiculo.fotos?.map(f => f.imagemBase64) || [];
+      this.populateFormWithVehicleData();
+      this.form = this.createVehicleForm();
     }
   }
 
-  triggerFileInput() {
+  // SRP: Preenchimento do formulário com dados do veículo
+  private populateFormWithVehicleData(): void {
+    if (!this.veiculo) return;
+
+    this.fotosPreview = this.veiculo.fotos?.map(f => f.imagemBase64) || [];
+  }
+
+  // SRP: Validação completa do formulário
+  private validateForm(): FormValidationResult {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return {
+        isValid: false,
+        message: 'Por favor, corrija os campos obrigatórios destacados'
+      };
+    }
+
+    return { isValid: true, message: '' };
+  }
+
+
+
+  // SRP: Validação de arquivos de imagem
+  private validateImageFiles(files: File[]): { valid: File[], invalid: File[], errors: string[] } {
+    const valid: File[] = [];
+    const invalid: File[] = [];
+    const errors: string[] = [];
+
+    files.forEach(file => {
+      // Validar tipo
+      if (!this.imageConstraints.allowedTypes.includes(file.type)) {
+        invalid.push(file);
+        errors.push(`${file.name}: tipo não permitido`);
+        return;
+      }
+
+      // Validar tamanho
+      if (file.size > this.imageConstraints.maxSizeBytes) {
+        invalid.push(file);
+        errors.push(`${file.name}: arquivo muito grande (máx. 5MB)`);
+        return;
+      }
+
+      valid.push(file);
+    });
+
+    return { valid, invalid, errors };
+  }
+
+  // SRP: Processamento de imagens
+  private async processImages(files: File[]): Promise<ImageProcessingResult> {
+    const currentCount = this.fotosPreview.length;
+    const available = this.imageConstraints.maxFiles - currentCount;
+
+    if (available <= 0) {
+      return {
+        success: false,
+        images: [],
+        message: `Limite máximo de ${this.imageConstraints.maxFiles} fotos atingido!`
+      };
+    }
+
+    const validation = this.validateImageFiles(files);
+    if (validation.errors.length > 0) {
+      return {
+        success: false,
+        images: [],
+        message: validation.errors.join(', ')
+      };
+    }
+
+    const filesToProcess = validation.valid.slice(0, available);
+    const processedImages: string[] = [];
+
+    try {
+      for (const file of filesToProcess) {
+        const base64 = await this.fileToBase64(file);
+        processedImages.push(base64);
+      }
+
+      const message = filesToProcess.length < files.length
+        ? `${files.length - filesToProcess.length} foto(s) não foram adicionadas devido ao limite`
+        : undefined;
+
+      return {
+        success: true,
+        images: processedImages,
+        message
+      };
+    } catch (error) {
+      return {
+        success: false,
+        images: [],
+        message: 'Erro ao processar imagens'
+      };
+    }
+  }
+
+  // SRP: Conversão de arquivo para Base64
+  private fileToBase64(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = () => reject(new Error('Erro ao ler arquivo'));
+      reader.readAsDataURL(file);
+    });
+  }
+
+  // SRP: Criação de objeto foto
+  private createPhotoObject(base64: string, order: number): any {
+    return {
+      imagemBase64: base64,
+      ordem: order
+    };
+  }
+
+  // SRP: Preparação de fotos para DTO
+  private preparePhotosForDto(photos: any[]): CreateVeiculoFotoDto[] {
+    return photos.map((foto, index) => ({
+      imagemBase64: foto.imagemBase64,
+      ordem: index + 1,
+      id: foto.id
+    }));
+  }
+
+  // Métodos públicos da interface
+
+  triggerFileInput(): void {
     const fileInput = document.getElementById('fileInput') as HTMLInputElement;
     if (fileInput) {
       fileInput.click();
     }
   }
 
-  onFotosSelecionadas(event: Event) {
+  async onFotosSelecionadas(event: Event): Promise<void> {
     const input = event.target as HTMLInputElement;
     const files = Array.from(input.files || []);
 
     if (files.length === 0) return;
 
-    const atuais = this.fotosPreview.length;
-    const disponiveis = 15 - atuais;
+    const result = await this.processImages(files);
 
-    if (disponiveis <= 0) {
-      alert('Limite máximo de 15 fotos atingido!');
-      return;
+    if (result.success) {
+      result.images.forEach(base64Image => {
+        this.fotosPreview.push(base64Image);
+        const fotos = this.form.value.fotos || [];
+        const novaFoto = this.createPhotoObject(base64Image, fotos.length + 1);
+        this.form.patchValue({ fotos: [...fotos, novaFoto] });
+      });
+
+      if (result.message) {
+        this.showMessage(result.message, 'warning');
+      }
+    } else {
+      this.showMessage(result.message || 'Erro ao processar imagens', 'error');
     }
 
-    const selecionadas = files.slice(0, disponiveis);
-
-    // Processar cada arquivo para criar preview e converter para Base64
-    selecionadas.forEach((file, index) => {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const result = e.target?.result as string;
-        if (result) {
-          this.fotosPreview.push(result);
-          const fotos = this.form.value.fotos || [];
-          // Criar objeto foto para novas fotos (sem ID, pois são novas)
-          const novaFoto = {
-            imagemBase64: result,
-            ordem: fotos.length + 1
-          };
-          this.form.patchValue({ fotos: [...fotos, novaFoto] });
-        }
-      };
-      reader.readAsDataURL(file);
-    });
-
-    // Limpar o input para permitir selecionar os mesmos arquivos novamente se necessário
     input.value = '';
-
-    if (selecionadas.length < files.length) {
-      const naoAdicionadas = files.length - selecionadas.length;
-      alert(`${naoAdicionadas} foto(s) não foram adicionadas devido ao limite de 15 fotos.`);
-    }
   }
 
-  removerFoto(idx: number) {
-    // Verificar se a foto tem ID (foto existente) e adicionar à lista de remoção
+  removerFoto(idx: number): void {
     const fotos = this.form.value.fotos || [];
     const foto = fotos[idx];
 
-    if (foto && foto.id) {
+    // Verificar se a foto tem ID (foto existente no banco)
+    if (foto && foto.id && foto.id > 0) {
+      console.log('Adicionando foto para remoção:', foto.id);
       this.fotosToRemove.push(foto.id);
     }
 
-    // Remover da preview e do formulário
     this.fotosPreview.splice(idx, 1);
     fotos.splice(idx, 1);
+
+    // Reordenar fotos restantes
+    fotos.forEach((f: any, i: number) => {
+      f.ordem = i + 1;
+    });
+
     this.form.patchValue({ fotos: [...fotos] });
+    console.log('Array fotosToRemove:', this.fotosToRemove);
   }
 
-  toggleOpcional(opcionalId: number, checked: boolean) {
+  toggleOpcional(opcionalId: number, checked: boolean): void {
     const opcionaisIds = this.form.value.opcionaisIds || [];
+
     if (checked) {
       if (!opcionaisIds.includes(opcionalId)) {
         this.form.patchValue({ opcionaisIds: [...opcionaisIds, opcionalId] });
@@ -151,71 +313,88 @@ export class VeiculoFormComponent implements OnInit {
     }
   }
 
-  salvar() {
-    if (this.form.invalid) return;
+  salvar(): void {
+    const validation = this.validateForm();
+
+    if (!validation.isValid) {
+      this.showMessage(validation.message, 'error');
+      return;
+    }
 
     const formValue = this.form.value;
-
-    // Preparar fotos para o DTO usando Base64
-    const fotosDto: CreateVeiculoFotoDto[] = (formValue.fotos || []).map((foto: any, index: number) => ({
-      imagemBase64: foto.imagemBase64,
-      ordem: index + 1, // Sempre usar o índice atual para garantir ordem sequencial
-      id: foto.id // Incluir ID se existir (para fotos existentes)
-    }));
-
-    var veiculoDto: InsertUpdVeiculoDto = {
-        marca: formValue.marca,
-        modelo: formValue.modelo,
-        ano: formValue.ano,
-        placa: formValue.placa,
-        km: formValue.km,
-        cor: formValue.cor,
-        preco: formValue.preco,
-        opcionaisIds: formValue.opcionaisIds,
-      fotos: fotosDto,
-      };
+    const veiculoDto = this.createVehicleDto(formValue);
+    const fotosDto = this.preparePhotosForDto(formValue.fotos || []);
 
     if (this.editId) {
-      // Atualização
-      veiculoDto.fotosParaRemover = this.fotosToRemove
-      this.service.updateVeiculo(this.editId, veiculoDto).subscribe({
-        next: () => {
-          this.snackBar.open('Veículo atualizado com sucesso!', 'Fechar', {
-            duration: 3000,
-            panelClass: ['success-snackbar']
-          });
-          this.dialogRef.close(true);
-        },
-        error: (error) => {
-          console.error('Erro ao atualizar veículo:', error);
-          this.snackBar.open('Erro ao atualizar veículo. Tente novamente.', 'Fechar', {
-            duration: 5000,
-            panelClass: ['error-snackbar']
-          });
-        }
-      });
+      this.updateVehicle(veiculoDto, fotosDto);
     } else {
-      // Criação
-      this.service.addVeiculo(veiculoDto).subscribe({
-        next: () => {
-          this.snackBar.open('Veículo cadastrado com sucesso!', 'Fechar', {
-            duration: 3000,
-            panelClass: ['success-snackbar']
-          });
-          this.dialogRef.close(true);
-        },
-        error: (error) => {
-          console.error('Erro ao cadastrar veículo:', error);
-          this.snackBar.open('Erro ao cadastrar veículo. Tente novamente.', 'Fechar', {
-            duration: 5000,
-            panelClass: ['error-snackbar']
-          });
-        }
-      });
+      this.createVehicle(veiculoDto, fotosDto);
     }
   }
 
-  cancelar() {
+  // SRP: Criação do DTO do veículo
+  private createVehicleDto(formValue: any): InsertUpdVeiculoDto {
+    return {
+      marca: formValue.marca,
+      modelo: formValue.modelo,
+      ano: formValue.ano,
+      placa: formValue.placa,
+      km: formValue.km || 0,
+      cor: formValue.cor,
+      preco: formValue.preco,
+      opcionaisIds: formValue.opcionaisIds || [],
+      fotos: [], // Será preenchido separadamente
+      fotosParaRemover: this.fotosToRemove
+    };
+  }
+
+  // SRP: Atualização de veículo
+  private updateVehicle(veiculoDto: InsertUpdVeiculoDto, fotosDto: CreateVeiculoFotoDto[]): void {
+    veiculoDto.fotos = fotosDto;
+    veiculoDto.fotosParaRemover = this.fotosToRemove;
+
+    console.log('Enviando para API - fotosParaRemover:', veiculoDto.fotosParaRemover);
+
+    this.service.updateVeiculo(this.editId!, veiculoDto).subscribe({
+      next: () => {
+        this.showMessage('Veículo atualizado com sucesso!', 'success');
+        this.dialogRef.close(true);
+      },
+      error: (error) => {
+        console.error('Erro ao atualizar veículo:', error);
+        this.showMessage('Erro ao atualizar veículo. Tente novamente.', 'error');
+      }
+    });
+  }
+
+  // SRP: Criação de veículo
+  private createVehicle(veiculoDto: InsertUpdVeiculoDto, fotosDto: CreateVeiculoFotoDto[]): void {
+    veiculoDto.fotos = fotosDto;
+
+    this.service.addVeiculo(veiculoDto).subscribe({
+      next: () => {
+        this.showMessage('Veículo cadastrado com sucesso!', 'success');
+        this.dialogRef.close(true);
+      },
+      error: (error) => {
+        console.error('Erro ao cadastrar veículo:', error);
+        this.showMessage('Erro ao cadastrar veículo. Tente novamente.', 'error');
+      }
+    });
+  }
+
+  // SRP: Exibição de mensagens
+  private showMessage(message: string, type: 'success' | 'error' | 'warning'): void {
+    const panelClass = [`${type}-snackbar`];
+    const duration = type === 'error' ? 5000 : 3000;
+
+    this.snackBar.open(message, 'Fechar', {
+      duration,
+      panelClass
+    });
+  }
+
+  cancelar(): void {
     this.dialogRef.close(false);
   }
 }

@@ -65,11 +65,19 @@
         <div class="tab company-tab">
           <div class="portal-tooltip">iCarros</div>
           <img src="/assets/iCarros.svg" alt="iCarros" class="icarros-img">
+          <div class="pacotes-top-buttons">
+            <span class="material-icons text-[#4CAF50]">arrow_downward</span>
+            <span class="material-icons text-red-600">clear</span>
+          </div>
         </div>
 
         <div class="tab company-tab">
           <div class="portal-tooltip">WebMotors</div>
           <img src="/assets/WebMotors.svg" alt="WebMotors" class="webmotors-img">
+          <div class="pacotes-top-buttons">
+            <span class="material-icons text-[#4CAF50]">arrow_downward</span>
+            <span class="material-icons text-red-600">clear</span>
+          </div>
         </div>
       </div>
 
@@ -135,6 +143,10 @@
                 <mat-icon class="opcao-icon">settings</mat-icon>
                 <span class="opcoes-text" [ngClass]="{'text-red-600': v.opcionais?.length === 0}">Opcionais</span>
               </div>
+              <div class="pacotes-side-buttons">
+                <span class="material-icons text-red-600">clear</span>
+                <span class="material-icons text-[#4CAF50]">arrow_forward</span>
+              </div>
             </div>
 
             <div class="veiculo-preco">
@@ -168,11 +180,11 @@
                       (change)="alterarPacote(v, 'icarros', 'platinum', $event)">
                   </div>
                   <span class="pacote-label">Platinum</span>
-                  </div>
-                  
-                  <div class="pacote-item">
-                    <div class="pacote-checkbox">
-                      <input type="checkbox" [checked]="v.icarros?.basico" (change)="alterarPacote(v, 'icarros', 'basico', $event)">
+                </div>
+                
+                <div class="pacote-item">
+                  <div class="pacote-checkbox">
+                    <input type="checkbox" [checked]="v.icarros?.basico" (change)="alterarPacote(v, 'icarros', 'basico', $event)">
                     </div>
                     <span class="pacote-label">Básico</span>
                 </div>
@@ -185,25 +197,25 @@
                     <input type="checkbox" [checked]="v.webmotors?.bronze" (change)="alterarPacote(v, 'webmotors', 'bronze', $event)">
                   </div>
                   <span class="pacote-label">Bronze</span>
+                </div>
+                
+                <div class="pacote-item">
+                  <div class="pacote-checkbox">
+                    <input type="checkbox" [checked]="v.webmotors?.diamante"
+                      (change)="alterarPacote(v, 'webmotors', 'diamante', $event)">
                   </div>
-                  
-                  <div class="pacote-item">
-                    <div class="pacote-checkbox">
-                      <input type="checkbox" [checked]="v.webmotors?.diamante"
-                        (change)="alterarPacote(v, 'webmotors', 'diamante', $event)">
-                    </div>
-                    <span class="pacote-label">Diamante</span>
+                  <span class="pacote-label">Diamante</span>
+                </div>
+                
+                <div class="pacote-item">
+                  <div class="pacote-checkbox">
+                    <input type="checkbox" [checked]="v.webmotors?.platinum"
+                      (change)="alterarPacote(v, 'webmotors', 'platinum', $event)">
                   </div>
-                  
-                  <div class="pacote-item">
-                    <div class="pacote-checkbox">
-                      <input type="checkbox" [checked]="v.webmotors?.platinum"
-                        (change)="alterarPacote(v, 'webmotors', 'platinum', $event)">
-                    </div>
-                    <span class="pacote-label">Platinum</span>
-                  </div>
-                  
-                  <div class="pacote-item">
+                  <span class="pacote-label">Platinum</span>
+                </div>
+                
+                <div class="pacote-item">
                   <div class="pacote-checkbox">
                     <input type="checkbox" [checked]="v.webmotors?.basico"
                       (change)="alterarPacote(v, 'webmotors', 'basico', $event)">
@@ -221,29 +233,29 @@
 
 
   <div class="paginacao-rodape">
-    <button class="pag-btn" [disabled]="paginaAtual === 1" (click)="irParaPrimeiraPagina()">
-      <mat-icon>first_page</mat-icon>
+    <button class="pag-btn-nav" [disabled]="paginaAtual === 1" (click)="irParaPrimeiraPagina()">
+      ≪
     </button>
 
-    <button class="pag-btn" [disabled]="paginaAtual === 1" (click)="paginaAnterior()">
-      <mat-icon>chevron_left</mat-icon>
+    <button class="pag-btn-nav mr-2" [disabled]="paginaAtual === 1" (click)="paginaAnterior()">
+      ‹
     </button>
 
     <div class="numeros-pagina">
       <ng-container *ngFor="let pagina of getPaginasVisiveis()">
-        <div class="pag-numero" [class.active]="pagina === paginaAtual" [class.disabled]="pagina === '...'"
-          (click)="pagina !== '...' && irParaPagina(+pagina)">
+        <button class="pag-numero" [class.active]="pagina === paginaAtual" [class.disabled]="pagina === '...'"
+          (click)="pagina !== '...' && irParaPagina(+pagina)" [disabled]="pagina === '...'">
           {{ pagina }}
-        </div>
+        </button>
       </ng-container>
     </div>
 
-    <button class="pag-btn" [disabled]="paginaAtual === totalPaginas" (click)="proximaPagina()">
-      <mat-icon>chevron_right</mat-icon>
+    <button class="pag-btn-nav ml-2" [disabled]="paginaAtual === totalPaginas" (click)="proximaPagina()">
+      ›
     </button>
 
-    <button class="pag-btn" [disabled]="paginaAtual === totalPaginas" (click)="irParaUltimaPagina()">
-      <mat-icon>last_page</mat-icon>
+    <button class="pag-btn-nav" [disabled]="paginaAtual === totalPaginas" (click)="irParaUltimaPagina()">
+      ≫
     </button>
   </div>
 </div>
