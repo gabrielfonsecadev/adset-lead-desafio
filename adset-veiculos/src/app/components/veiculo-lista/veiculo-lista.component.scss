@@ -1,3 +1,4 @@
+/* Layout base da aplicação */
 .background-container {
   background-color: #f6f6f6;
 }
@@ -11,13 +12,193 @@
   margin-left: 85px;
 }
 
-// Seção de ordenação
+.content-container {
+  background: white;
+}
+
+/* Seção de ordenação */
 .ordenacao-container {
   width: 100%;
   max-width: 1000px;
   margin-bottom: 10px;
 }
 
+.container-topo {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1000px;
+  align-items: baseline;
+  padding-bottom: 5px;
+  flex-wrap: wrap;
+}
+
+.ordenacao-linha {
+  display: flex;
+  align-items: baseline;
+  gap: 0;
+  border-radius: 8px 8px 0 0;
+  padding: 0;
+  height: 40px;
+  bottom: 0;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.ordenacao-item {
+  display: flex;
+  align-items: center;
+  background-color:#40a52b;
+  padding: 6px 0;
+  padding-right: 2px;
+  gap: 7px;
+  position: relative;
+  margin-right: 15px;
+
+  .clear-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffffff;
+    color: rgb(255, 0, 0);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+
+    .clear-icon {
+      font-size: 18px;
+      font-weight: bold;
+    }
+  }
+
+  .clear-btn:hover {
+    background-color: #ebebeb;
+  }
+
+  .ordenacao-setas {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 8px;
+    line-height: 0.6;
+
+    .seta-up,
+    .seta-down {
+      font-size: 12px;
+      color: #ffffff;
+      transition: color 0.2s ease;
+      padding: 1px 0;
+
+      &.ativa {
+        color: #28a745;
+        font-weight: bold;
+        font-weight: 11px;
+      }
+    }
+  }
+
+  .ordenacao-ponta {
+    position: absolute;
+    right: -16px;
+    top: 50%;
+    transform: translateY(-50%);
+    border-left: 16px solid #40a52b;
+    border-top: 15px solid transparent;
+    border-bottom: 15px solid transparent;
+  }
+}
+
+.ordenacao-btn {
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
+  height: 100%;
+  border: none;
+  border-right: 1px solid #e0e0e0;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  color: #666;
+  transition: all 0.2s ease;
+
+  &:hover {
+    color: #28a745;
+  }
+
+  .ordenacao-setas {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 8px;
+    line-height: 0.6;
+
+    .seta-up,
+    .seta-down {
+      font-size: 10px;
+      color: #818181;
+      transition: color 0.2s ease;
+      padding: 1px 0;
+
+      &.ativa {
+        color: #28a745;
+        font-weight: bold;
+        font-weight: 11px;
+      }
+    }
+  }
+}
+
+.exibir-container {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  margin-right: 10px;
+  height: 30px;
+  background: white;
+  border-radius: 13px 0 0 13px;
+  border: 1px solid #d4d4d4;
+  position: relative;
+  overflow: hidden;
+
+  .exibir-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #666;
+    padding-left: 10px;
+  }
+
+  .exibir-select {
+    border: none;
+    background: transparent;
+    font-size: 15px;
+    font-weight: 700;
+    color: rgb(83, 83, 83);
+    cursor: pointer;
+    outline: none;
+    appearance: none;
+    padding: 0 25px;
+    padding-left: 10px;
+    flex: 1;
+  }
+
+  .exibir-seta {
+    background-color: #28a745;
+    color: white;
+    font-size: 10px;
+    height: 100%;
+    width: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    right: 0;
+    top: 0;
+    pointer-events: none;
+  }
+}
+
+/* Cards dos veículos */
 .veiculo-card {
   position: relative;
   background: white;
@@ -32,316 +213,6 @@
   margin-bottom: 0px;
 }
 
-.content-container {
-  background: white;
-}
-
-// Abas dos portais no topo direito
-.portais-tabs-topo {
-  display: flex;
-  z-index: 10;
-  justify-content: flex-end;
-  gap: 20px;
-
-  .tab {
-    padding: 10px 20px;
-    font-size: 12px;
-    width: 110px;
-    text-align: center;
-    position: relative;
-
-    &.company-tab {
-      background-color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 12px 12px 0 0;
-    }
-
-    &.company-tab:last-child {
-      margin-right: 10px;
-    }
-
-    /* espaçamento agora é controlado pelo gap do contêiner */
-
-    &.company-tab {
-      img {
-        width: 40px;
-        height: 40px;
-      }
-    }
-
-    .pacotes-top-buttons {
-      background-color: white;
-      border-radius: 50%;
-      padding: 5px;
-      position: absolute;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 2px;
-      transform: translateY(130%);
-
-      span {
-        // cursor: pointer;
-        font-size: 18px;
-        font-weight: 700;
-      }
-    }
-  }
-
-  /* Tooltip dinâmica centralizada acima do item */
-  .portal-tooltip {
-    position: absolute;
-    top: -37px;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: #3f3f3f;
-    color: #ffffff;
-    font-size: 14px;
-    padding: 3px 8px;
-    border-radius: 2px;
-    white-space: nowrap;
-    width: 100%;
-  }
-
-  .portal-tooltip::after {
-    content: '';
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    bottom: -6px;
-    width: 0;
-    height: 0;
-    border-left: 6px solid transparent;
-    border-right: 6px solid transparent;
-    border-top: 6px solid #3f3f3f;
-  }
-}
-
-.container-topo {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  max-width: 1000px;
-  align-items: baseline;
-  padding-bottom: 5px;
-  flex-wrap: wrap;
-}
-
-
-.ordenacao-linha {
-    display: flex;
-    align-items: baseline;
-    gap: 0;
-    border-radius: 8px 8px 0 0;
-    padding: 0;
-    height: 40px;
-    bottom: 0;
-    justify-content: space-between;
-    flex-wrap: wrap;
-  }
-
-  .ordenacao-item {
-    display: flex;
-    align-items: center;
-    background-color:#40a52b;
-    padding: 6px 0;
-    padding-right: 2px;
-    gap: 7px;
-    position: relative;
-    margin-right: 15px;
-
-    .clear-btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background-color: #ffffff;
-      color: rgb(255, 0, 0);
-      border: none;
-      border-radius: 50%;
-      cursor: pointer;
-
-      transition: background-color 0.2s ease;
-
-      .clear-icon {
-        font-size: 18px;
-        font-weight: bold;
-      }
-    }
-
-    .clear-btn:hover {
-      background-color: #ebebeb;
-    }
-
-    .ordenacao-setas {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-left: 8px;
-      line-height: 0.6;
-
-      .seta-up,
-      .seta-down {
-        font-size: 12px;
-        color: #ffffff;
-        transition: color 0.2s ease;
-        padding: 1px 0;
-
-        &.ativa {
-          color: #28a745;
-          font-weight: bold;
-          font-weight: 11px;
-        }
-      }
-    }
-
-    .ordenacao-ponta {
-      position: absolute;
-      right: -16px;
-      top: 50%;
-      transform: translateY(-50%);
-      border-left: 16px solid #40a52b;
-      border-top: 15px solid transparent;
-      border-bottom: 15px solid transparent;
-    }
-  }
-
-  .ordenacao-btn {
-    display: flex;
-    align-items: center;
-    padding: 0 15px;
-    height: 100%;
-    border: none;
-    border-right: 1px solid #e0e0e0;
-    cursor: pointer;
-    font-size: 13px;
-    font-weight: 500;
-    color: #666;
-    transition: all 0.2s ease;
-
-    &:hover {
-      color: #28a745;
-    }
-
-    .ordenacao-setas {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-left: 8px;
-      line-height: 0.6;
-
-      .seta-up,
-      .seta-down {
-        font-size: 10px;
-        color: #818181;
-        transition: color 0.2s ease;
-        padding: 1px 0;
-
-        &.ativa {
-          color: #28a745;
-          font-weight: bold;
-          font-weight: 11px;
-        }
-      }
-    }
-  }
-
-  .exibir-container {
-    display: flex;
-    align-items: center;
-    margin-left: auto;
-    margin-right: 10px;
-    height: 30px;
-    background: white;
-    border-radius: 13px 0 0 13px;
-    border: 1px solid #d4d4d4;
-    position: relative;
-    overflow: hidden;
-
-    .exibir-label {
-      font-size: 14px;
-      font-weight: 500;
-      color: #666;
-      padding-left: 10px;
-    }
-
-    .exibir-select {
-      border: none;
-      background: transparent;
-      font-size: 15px;
-      font-weight: 700;
-      color: rgb(83, 83, 83);
-      cursor: pointer;
-      outline: none;
-      appearance: none;
-      padding: 0 25px;
-      padding-left: 10px;
-      flex: 1;
-    }
-
-    .exibir-seta {
-      background-color: #28a745;
-      color: white;
-      font-size: 10px;
-      height: 100%;
-      width: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: absolute;
-      right: 0;
-      top: 0;
-      pointer-events: none;
-    }
-  }
-
-/* Layout em duas colunas para iCarros e WebMotors */
-.pacotes-lista-dupla {
-  display: flex;
-  background-color: white;
-  width: 100%;
-}
-
-.coluna-portal {
-  flex: 1;
-}
-
-/* Ajustes de abas quando usadas dentro da coluna */
-.coluna-portal .portais-tabs-topo {
-  width: auto;
-  justify-content: center;
-}
-
-.coluna-portal .portais-tabs-topo .tab.company-tab {
-  width: auto;
-}
-
-/* Painel com logo e ícones abaixo da aba */
-.portal-panel {
-  background: #ffffff;
-  border-radius: 12px;
-  padding: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-}
-
-.portal-icons {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-
-  .success {
-    color: #4caf50;
-  }
-  .warn {
-    color: #e53935;
-  }
-}
-
-// Container principal do veículo
 .veiculo-container {
   display: grid;
   grid-template-columns: auto 1fr auto auto;
@@ -415,7 +286,7 @@
 
 .veiculo-detalhes {
   margin-bottom: 10px;
-      width: fit-content;
+  width: fit-content;
 
   .detalhe-item {
     display: flex;
@@ -460,7 +331,133 @@
   z-index: 0;
 }
 
-// Seção de ações no centro
+/* Abas dos portais */
+
+.portais-tabs-topo {
+  display: flex;
+  z-index: 10;
+  justify-content: flex-end;
+  gap: 20px;
+
+  .tab {
+    padding: 10px 20px;
+    font-size: 12px;
+    width: 110px;
+    text-align: center;
+    position: relative;
+
+    &.company-tab {
+      background-color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px 12px 0 0;
+    }
+
+    &.company-tab:last-child {
+      margin-right: 10px;
+    }
+
+    &.company-tab {
+      img {
+        width: 40px;
+        height: 40px;
+      }
+    }
+
+    .pacotes-top-buttons {
+      background-color: white;
+      border-radius: 50%;
+      padding: 5px;
+      position: absolute;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      transform: translateY(130%);
+
+      span {
+        font-size: 18px;
+        font-weight: 700;
+      }
+    }
+  }
+
+  /* Tooltip dinâmica centralizada acima do item */
+  .portal-tooltip {
+    position: absolute;
+    top: -37px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #3f3f3f;
+    color: #ffffff;
+    font-size: 14px;
+    padding: 3px 8px;
+    border-radius: 2px;
+    white-space: nowrap;
+    width: 100%;
+  }
+
+  .portal-tooltip::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -6px;
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid #3f3f3f;
+  }
+}
+
+/* Layout em duas colunas para iCarros e WebMotors */
+.pacotes-lista-dupla {
+  display: flex;
+  background-color: white;
+  width: 100%;
+}
+
+.coluna-portal {
+  flex: 1;
+}
+
+/* Ajustes de abas quando usadas dentro da coluna */
+.coluna-portal .portais-tabs-topo {
+  width: auto;
+  justify-content: center;
+}
+
+.coluna-portal .portais-tabs-topo .tab.company-tab {
+  width: auto;
+}
+
+/* Painel com logo e ícones abaixo da aba */
+.portal-panel {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.portal-icons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  .success {
+    color: #4caf50;
+  }
+  .warn {
+    color: #e53935;
+  }
+}
+
+/* Seção de ações */
 .veiculo-acoes-centro {
   display: flex;
   flex-direction: column;
@@ -558,7 +555,6 @@
       transform: translateX(485%) translateY(-50%);
 
       span {
-        // cursor: pointer;
         font-size: 18px;
         font-weight: 700;
       }
@@ -566,7 +562,7 @@
   }
 }
 
-// Seção dos portais à direita
+/* Seção dos portais à direita */
 .portais-section-direita {
   background-color: white;
   min-width: 250px;
@@ -601,6 +597,10 @@
       background-color: #e74c3c;
     }
   }
+}
+
+.icons-second-container {
+  display: none;
 }
 
 .pacotes-lista-vertical {
@@ -648,6 +648,7 @@
   }
 }
 
+/* Paginação */
 .paginacao-rodape {
   display: flex;
   justify-content: center;
@@ -728,9 +729,7 @@
   }
 }
 
-/* Media Queries para Responsividade */
-
-/* Tablets e telas médias (768px - 1024px) */
+/* Responsividade */
 @media (max-width: 1190px) {
   .lista {
     margin-left: 20px;
@@ -760,27 +759,9 @@
       padding: 8px 15px;
     }
   }
-
-  // .veiculo-container {
-  //   grid-template-columns: auto 1fr auto;
-  //   margin: 5px;
-  // }
-
-  // .veiculo-imagem {
-  //   width: 180px;
-  // }
-
-  // .veiculo-acoes-centro {
-  //   width: 150px;
-  // }
-
-  // .portais-section-direita {
-  //   min-width: 200px;
-  // }
 }
 
-/* Smartphones e telas pequenas (até 768px) */
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .lista {
     margin-left: 0;
     padding: 20px 10px;
@@ -788,7 +769,6 @@
   }
 
   .container-topo {
-    flex-direction: column;
     gap: 15px;
     align-items: stretch;
   }
@@ -800,7 +780,7 @@
 
   .ordenacao-btn {
     padding: 8px 12px;
-    font-size: 11px;
+    font-size: 13px;
   }
 
   .exibir-container {
@@ -812,16 +792,6 @@
     justify-content: center;
     gap: 10px;
     display: none;
-
-    // .tab {
-    //   width: 80px;
-    //   padding: 6px 10px;
-
-    //   img {
-    //     width: 30px;
-    //     height: 30px;
-    //   }
-    // }
   }
 
   .veiculo-card {
@@ -832,13 +802,13 @@
   .veiculo-container {
     grid-template-columns: 1fr;
     grid-template-rows: auto auto auto;
-    gap: 10px;
     margin: 5px;
     padding: 10px;
   }
 
   .image-container {
     justify-content: center;
+    background-color: transparent;
   }
 
   .veiculo-imagem {
@@ -848,16 +818,17 @@
   }
 
   .veiculo-info-principal {
-    padding: 10px;
+    padding: 20px 10px 0 10px;
     text-align: center;
   }
 
   .veiculo-acoes-centro {
     width: 100%;
     flex-direction: row;
-    justify-content: space-evenly;
+    justify-content: space-between;
     align-items: center;
     padding: 10px;
+    margin-left: 20px;
 
     .opcoes-icons {
       flex-direction: row;
@@ -868,6 +839,11 @@
     .pacotes-side-buttons {
       display: none !important;
     }
+
+    .veiculo-preco {
+      transform: translateY(13px);
+      margin-right: 10px;
+    }
   }
 
   .portais-section-direita {
@@ -876,16 +852,39 @@
     border-top: 1px solid #ecf0f1;
   }
 
-  .pacotes-lista-dupla {
+  .icons-second-container {
+    display: flex;
+    justify-content: center;
     flex-direction: column;
+    align-items: center;
+
+    .icons-second-img {
+      width: 50px;
+      height: 50px;
+      margin: auto;
+      margin-top: 10px;
+    }
+
+    span {
+    font-size: 12px;
+    color: #575c5e;
+    font-weight: 500;
+    padding-top: 5px;
+    }
+  }
+
+
+  .pacotes-lista-dupla {
     gap: 10px;
   }
 
   .pacotes-lista-vertical {
-    border-right: none;
-    border-bottom: 1px solid #cfcfcf;
     height: auto;
     padding: 10px 0;
+  }
+
+  .pacotes-lista-vertical:last-child {
+    border-right: none;
   }
 
   .paginacao-rodape {
@@ -896,18 +895,25 @@
   .numeros-pagina {
     justify-content: center;
   }
+
+  .editar-tooltip {
+    display: none;
+  }
 }
 
-/* Telas muito pequenas (até 480px) */
 @media (max-width: 480px) {
   .lista {
     padding: 15px 5px;
     padding-top: 250px;
   }
 
+  .container-topo {
+    padding-bottom: 7px;
+  }
+
   .ordenacao-btn {
     padding: 6px 8px;
-    font-size: 10px;
+    font-size: 11px;
   }
 
   .portais-tabs-topo {
@@ -926,10 +932,6 @@
   .veiculo-container {
     margin: 3px;
     padding: 8px;
-  }
-
-  .veiculo-imagem {
-    height: 120px;
   }
 
   .veiculo-titulo .marca-modelo {

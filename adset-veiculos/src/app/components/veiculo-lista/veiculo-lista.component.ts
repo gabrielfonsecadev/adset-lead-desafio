@@ -93,21 +93,43 @@ export class VeiculoListaComponent implements OnInit, OnDestroy {
   }
 
   buscar() {
-    this.service.buscarVeiculos(this.filtro).subscribe(veiculos => {
-      this.veiculos = veiculos;
-      
-      // Aplica ordenação se configurada
-      if (this.sortConfig.field) {
-        this.filtrados = this.sortingService.sortArray(this.veiculos, this.sortConfig);
-      } else {
-        this.filtrados = [...veiculos];
+    this.service.buscarVeiculos(this.filtro).subscribe({
+      next: (veiculos) => {
+        this.veiculos = veiculos;
+        
+        // Aplica ordenação se configurada
+        if (this.sortConfig.field) {
+          this.filtrados = this.sortingService.sortArray(this.veiculos, this.sortConfig);
+        } else {
+          this.filtrados = [...veiculos];
+        }
+        
+        this.cores = [...new Set(this.veiculos.map(v => v.cor))];
+        this.vehiclePackageService.processVehiclePackages(this.filtrados);
+        
+        // Reset para primeira página
+        this.page = 1;
+
+        // Exibe mensagem de sucesso ou informação
+        if (veiculos && veiculos.length > 0) {
+          this.snackBar.open(`${veiculos.length} veículo(s) encontrado(s)`, 'Fechar', {
+            duration: 3000,
+            panelClass: ['success-snackbar']
+          });
+        } else {
+          this.snackBar.open('Nenhum veículo encontrado com os filtros aplicados', 'Fechar', {
+            duration: 3000,
+            panelClass: ['info-snackbar']
+          });
+        }
+      },
+      error: (error) => {
+        console.error('Erro ao buscar veículos:', error);
+        this.snackBar.open('Erro ao buscar veículos. Tente novamente.', 'Fechar', {
+          duration: 5000,
+          panelClass: ['error-snackbar']
+        });
       }
-      
-      this.cores = [...new Set(this.veiculos.map(v => v.cor))];
-      this.vehiclePackageService.processVehiclePackages(this.filtrados);
-      
-      // Reset para primeira página
-      this.page = 1;
     });
   }
 
@@ -153,7 +175,6 @@ export class VeiculoListaComponent implements OnInit, OnDestroy {
     });
   }
 
-  // Métodos simplificados usando VehiclePackageService
   setPacoteICarros(v: Veiculo, p: string) { 
     this.vehiclePackageService.setICarrosPackage(v, p);
   }

@@ -1,3 +1,4 @@
+/* Estrutura principal*/
 .toolbar {
   display: flex;
   flex-direction: column;
@@ -8,6 +9,7 @@
   max-height: 90px;
 }
 
+/* Seção do logotipo */
 .logo {
   width: 100px;
   height: 70px;
@@ -21,7 +23,7 @@
   border-bottom: 1px solid #cacaca;
 }
 
-/* Primeira barra - cinza clara com estatísticas e botões */
+/* Primeira barra com estatísticas */
 .top-bar {
   margin-left: 85px;
   display: flex;
@@ -32,6 +34,7 @@
   border-bottom: 1px solid #cacaca;
 }
 
+/* Seção de Estatísticas */
 .stats-section {
   display: flex;
   align-items: center;
@@ -42,22 +45,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-.diagonal-separator {
-  width: 1px;
-  height: 40px;
-  background-color: #999;
-  transform: rotate(20deg);
-  margin: 0 15px;
-  opacity: 0.6;
-}
-
-.line-separator {
-  width: 1px;
-  height: 65px;
-  background-color: #999;
-  opacity: 0.6;
 }
 
 .stat-total {
@@ -81,6 +68,24 @@
   line-height: 1.2;
 }
 
+/* Separadores Visuais */
+.diagonal-separator {
+  width: 1px;
+  height: 40px;
+  background-color: #999;
+  transform: rotate(20deg);
+  margin: 0 15px;
+  opacity: 0.6;
+}
+
+.line-separator {
+  width: 1px;
+  height: 65px;
+  background-color: #999;
+  opacity: 0.6;
+}
+
+/* Seção de ações e botões */
 .actions-section {
   display: flex;
   align-items: center;
@@ -89,6 +94,7 @@
   max-width: 650px;
 }
 
+/* Botão de Exportar */
 .export-btn {
   display: flex;
   align-items: center;
@@ -102,6 +108,7 @@
   }
 }
 
+/* Botão de Cadastrar Veículo */
 .car-btn {
   width: 55px;
   height: 55px;
@@ -139,6 +146,7 @@
   }
 }
 
+/* Container de Salvar */
 .save-container {
   display: flex;
   align-items: center;
@@ -170,7 +178,7 @@
   }
 }
 
-/* Segunda barra - branca com filtros e controles */
+/* Segunda barra com filtros */
 .bottom-bar {
   width: 100%;
   max-width: 1100px;
@@ -178,6 +186,34 @@
   margin-left: 85px;
 }
 
+.bottom-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #e7e7e7;
+  position: relative;
+}
+
+/* Botão de Toggle */
+.toggle-btn {
+  color: #43ac47 !important;
+  position: absolute;
+  right: 20px;
+  border-radius: 0 0 10px 10px;
+  margin-bottom: 10px;
+  width: 30px;
+  background-color: white !important;
+  border: none !important;
+  outline: none !important;
+  border: 1px solid #e0e0e0 !important;
+}
+
+.toggle-btn:hover {
+  background-color: #f8f8f8 !important;
+  transition: background-color 0.1s ease-in-out;
+}
+
+/* Seção de filtros */
 .filtros-container {
   margin-left: 7px;
   padding: 10px 15px;
@@ -193,6 +229,7 @@
   align-items: start;
 }
 
+/* Grupos de Input */
 .input-group {
   display: flex;
   flex-direction: column;
@@ -220,57 +257,7 @@
   }
 }
 
-.clear-btn {
-  margin-top: 37px;
-  margin-left: 5px;
-  width: 25px;
-  height: 25px;
-  color: #f44336 !important;
-  background-color: #f1f1f1 !important;
-  border-radius: 50%;
-  border: none !important;
-
-  .mat-icon {
-    margin-top: 3px;
-    font-size: 18px;
-  }
-}
-
-.clear-btn:hover {
-  background-color: #dbdbdb !important;
-  transition: background-color 0.1s ease-in-out;
-}
-
-.bottom-controls {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #e7e7e7;
-  position: relative;
-}
-
-.search-btn {
-  background-color: #4CAF50 !important;
-  color: white !important;
-  padding: 3px 18px;
-  font-weight: 500;
-  font-size: 18px;
-  border-radius: 0 0 15px 15px;
-  border: none !important;
-  outline: none !important;
-
-  .mat-icon {
-    margin-right: 8px;
-    font-size: 24px;
-    transform: scaleX(-1);
-  }
-}
-
-.search-btn:hover {
-  background-color: #45a049 !important;
-  transition: background-color 0.1s ease-in-out;
-}
-
+/* Container de Select */
 .select-container {
   position: relative;
   display: flex;
@@ -310,26 +297,52 @@
   }
 }
 
-.toggle-btn {
-  color: #43ac47 !important;
-  position: absolute;
-  right: 20px;
-  border-radius: 0 0 10px 10px;
-  margin-bottom: 10px;
-  width: 30px;
-  background-color: white !important;
+/* Botão de Limpar */
+.clear-btn {
+  margin-top: 37px;
+  margin-left: 5px;
+  width: 25px;
+  height: 25px;
+  color: #f44336 !important;
+  background-color: #f1f1f1 !important;
+  border-radius: 50%;
   border: none !important;
-  outline: none !important;
+
+  .mat-icon {
+    margin-top: 3px;
+    font-size: 18px;
+  }
 }
 
-.toggle-btn:hover {
-  background-color: #f8f8f8 !important;
+.clear-btn:hover {
+  background-color: #dbdbdb !important;
   transition: background-color 0.1s ease-in-out;
 }
 
-/* Media Queries para Responsividade */
+/* Botão de Buscar */
+.search-btn {
+  background-color: #4CAF50 !important;
+  color: white !important;
+  padding: 3px 18px;
+  font-weight: 500;
+  font-size: 18px;
+  border-radius: 0 0 15px 15px;
+  border: none !important;
+  outline: none !important;
 
-/* Tablets e telas médias (768px - 1024px) */
+  .mat-icon {
+    margin-right: 8px;
+    font-size: 24px;
+    transform: scaleX(-1);
+  }
+}
+
+.search-btn:hover {
+  background-color: #45a049 !important;
+  transition: background-color 0.1s ease-in-out;
+}
+
+/* Responsividade */
 @media (max-width: 1190px) {
   .top-bar {
     margin-left: 20px;
@@ -368,8 +381,8 @@
   }
 }
 
-/* Smartphones e telas pequenas (até 768px) */
-@media (max-width: 768px) {
+
+@media (max-width: 900px) {
   .toolbar {
     height: auto;
   }
@@ -389,17 +402,18 @@
     flex-direction: column;
     gap: 15px;
     align-items: stretch;
+    justify-content: center;
   }
 
   .stats-section {
-    justify-content: center;
+    justify-content: space-evenly;
     flex-wrap: wrap;
     gap: 10px;
   }
 
   .actions-section {
-    justify-content: center;
-    gap: 10px;
+    justify-content: space-evenly;
+    margin: auto;
   }
 
   .save-container {
@@ -413,8 +427,15 @@
   }
 
   .bottom-bar {
-    margin-left: 0;
-    width: 100%;
+    justify-self: center;
+    width: 90%;
+    z-index: 100;
+    margin: 0 auto;
+    background-color: transparent;
+  }
+
+  .bottom-controls {
+    background-color: transparent;
   }
 
   .filtros-container {
@@ -423,13 +444,13 @@
   }
 
   .filtros-row {
-    flex-direction: column;
     gap: 10px;
     align-items: stretch;
+    flex-wrap: wrap;
   }
 
   .input-group {
-    width: 100% !important;
+    width: 45% !important;
 
     input {
       width: 100% !important;
@@ -442,7 +463,6 @@
     align-self: center;
   }
 
-  .diagonal-separator,
   .line-separator {
     display: none;
   }
@@ -450,9 +470,13 @@
   .stat-item {
     margin: 5px 0;
   }
+
+  .car-tooltip {
+    display: none;
+  }
 }
 
-/* Telas muito pequenas (até 480px) */
+
 @media (max-width: 480px) {
   .logo {
     width: 70px;
@@ -519,5 +543,9 @@
   .search-btn {
     font-size: 16px;
     padding: 2px 15px;
+  }
+
+  .toggle-btn {
+    margin-bottom: 6px;
   }
 }

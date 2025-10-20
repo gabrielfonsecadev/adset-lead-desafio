@@ -159,6 +159,11 @@
             <div class="pacotes-lista-dupla">
               <!-- Coluna iCarros -->
               <div class="pacotes-lista-vertical">
+                <div class="icons-second-container">
+                  <img src="/assets/iCarros.svg" alt="iCarros" class="icons-second-img">
+                  <span>iCarros</span>
+                </div>
+
                 <div class="pacote-item">
                   <div class="pacote-checkbox">
                     <input type="checkbox" [checked]="v.icarros?.bronze" (change)="alterarPacote(v, 'icarros', 'bronze', $event)">
@@ -181,7 +186,7 @@
                   </div>
                   <span class="pacote-label">Platinum</span>
                 </div>
-                
+
                 <div class="pacote-item">
                   <div class="pacote-checkbox">
                     <input type="checkbox" [checked]="v.icarros?.basico" (change)="alterarPacote(v, 'icarros', 'basico', $event)">
@@ -192,13 +197,18 @@
 
               <!-- Coluna WebMotors -->
               <div class="pacotes-lista-vertical" style="justify-content: center;">
+                <div class="icons-second-container">
+                  <img src="/assets/WebMotors.svg" alt="WebMotors" class="icons-second-img">
+                  <span>WebMotors</span>
+                </div>
+
                 <div class="pacote-item">
                   <div class="pacote-checkbox">
                     <input type="checkbox" [checked]="v.webmotors?.bronze" (change)="alterarPacote(v, 'webmotors', 'bronze', $event)">
                   </div>
                   <span class="pacote-label">Bronze</span>
                 </div>
-                
+
                 <div class="pacote-item">
                   <div class="pacote-checkbox">
                     <input type="checkbox" [checked]="v.webmotors?.diamante"
@@ -206,7 +216,7 @@
                   </div>
                   <span class="pacote-label">Diamante</span>
                 </div>
-                
+
                 <div class="pacote-item">
                   <div class="pacote-checkbox">
                     <input type="checkbox" [checked]="v.webmotors?.platinum"
@@ -214,7 +224,7 @@
                   </div>
                   <span class="pacote-label">Platinum</span>
                 </div>
-                
+
                 <div class="pacote-item">
                   <div class="pacote-checkbox">
                     <input type="checkbox" [checked]="v.webmotors?.basico"

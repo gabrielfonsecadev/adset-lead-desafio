@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("adset-veiculos-API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4051b72426e665ec3d2b6e53e323ab7431744401")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2f6ecda845b07ce96b1eb35c90a39e8c364fe012")]
 [assembly: System.Reflection.AssemblyProductAttribute("adset-veiculos-API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("adset-veiculos-API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
